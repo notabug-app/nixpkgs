@@ -45,6 +45,8 @@
       ];
     in
     {
+      overlays.default = customOverlay;
+
       devShells = nixpkgs.lib.genAttrs systems (
         system:
         let
@@ -72,8 +74,10 @@
           vaultwarden-vault = pkgs.vaultwarden-vault;
         }
         // nixpkgs.lib.optionalAttrs (system == "aarch64-linux") {
-          kernel = pkgs.linuxPackages_rpi_7_1.kernel;
-          cpupower = pkgs.linuxPackages_rpi_7_1.cpupower;
+          kernel-rpi4 = pkgs.linuxPackages_rpi4_7_1.kernel;
+          cpupower-rpi4 = pkgs.linuxPackages_rpi4_7_1.cpupower;
+          kernel-rpi5 = pkgs.linuxPackages_rpi5_7_1.kernel;
+          cpupower-rpi5 = pkgs.linuxPackages_rpi5_7_1.cpupower;
           libraspberrypi = pkgs.libraspberrypi;
         }
       );
@@ -86,7 +90,7 @@
         }
       );
 
-      overlays.default = customOverlay;
+
 
       nixosModules = {
         cf-ddns = inputs.cf-ddns.nixosModules.default;
@@ -109,8 +113,8 @@
             nixpkgs.overlays = [ customOverlay ];
 
             boot.kernelPackages = lib.mkMerge [
-              (lib.mkIf (config.raspberry-pi-nix.board == "bcm2711") pkgs.linuxPackages_rpi_7_1)
-              (lib.mkIf (config.raspberry-pi-nix.board == "bcm2712") pkgs.linuxPackages_rpi_7_1)
+              (lib.mkIf (config.raspberry-pi-nix.board == "bcm2711") pkgs.linuxPackages_rpi4_7_1)
+              (lib.mkIf (config.raspberry-pi-nix.board == "bcm2712") pkgs.linuxPackages_rpi5_7_1)
             ];
 
             assertions = [

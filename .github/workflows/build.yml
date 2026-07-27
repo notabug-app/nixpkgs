@@ -31,8 +31,10 @@ jobs:
           cache: ${{ secrets.ATTIC_CACHE }}
           token: ${{ secrets.ATTIC_SECRET }}
 
-      - name: Build kernel
-        run: nix build .#packages.aarch64-linux.kernel -L
+      - name: Build kernels
+        run: |
+          nix build .#packages.aarch64-linux.kernel-rpi4 -L
+          nix build .#packages.aarch64-linux.kernel-rpi5 -L
 
   build-pkgs:
     runs-on: ubuntu-24.04-arm
@@ -45,7 +47,8 @@ jobs:
           - rpi-vcio
           - vaultwarden
           - vaultwarden-vault
-          - cpupower
+          - cpupower-rpi4
+          - cpupower-rpi5
           - libraspberrypi
     steps:
       - name: Checkout
