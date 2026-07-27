@@ -92,7 +92,9 @@
 
 
 
-      nixosModules = {
+      lib = nixos-raspberrypi.lib;
+
+      nixosModules = nixos-raspberrypi.nixosModules // {
         cf-ddns = inputs.cf-ddns.nixosModules.default;
         dnsr = inputs.dnsr.nixosModules.default;
 
@@ -113,17 +115,17 @@
             nixpkgs.overlays = [ customOverlay ];
 
             boot.kernelPackages = lib.mkMerge [
-              (lib.mkIf (config.raspberry-pi-nix.board == "bcm2711") pkgs.linuxPackages_rpi4_7_1)
-              (lib.mkIf (config.raspberry-pi-nix.board == "bcm2712") pkgs.linuxPackages_rpi5_7_1)
+              (lib.mkIf (config.boot.loader.raspberry-pi.variant == "4") (lib.mkForce pkgs.linuxPackages_rpi4_7_1))
+              (lib.mkIf (config.boot.loader.raspberry-pi.variant == "5") (lib.mkForce pkgs.linuxPackages_rpi5_7_1))
             ];
 
             assertions = [
               {
-                assertion = builtins.elem config.raspberry-pi-nix.board [
-                  "bcm2711"
-                  "bcm2712"
+                assertion = builtins.elem config.boot.loader.raspberry-pi.variant [
+                  "4"
+                  "5"
                 ];
-                message = "This custom flake only keeps Pi 4 (bcm2711) and Pi 5 (bcm2712) enabled.";
+                message = "This custom flake only keeps Pi 4 and Pi 5 enabled.";
               }
             ];
           };

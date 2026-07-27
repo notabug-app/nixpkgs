@@ -1,60 +1,42 @@
-name: Build and Cache
+name: Build and Cache Nix Packages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
 jobs:
-  build-kernel:
+  generate-matrix:
     runs-on: ubuntu-24.04-arm
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Install Attic
-        run: nix profile install nixpkgs#attic-client
-
-      - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
-        with:
-          endpoint: ${{ secrets.ATTIC_URL }}
-          cache: ${{ secrets.ATTIC_CACHE }}
-          token: ${{ secrets.ATTIC_SECRET }}
-
-      - name: Build kernels
+      - name: Generate Matrix
+        id: set-matrix
         run: |
-          nix build .#packages.aarch64-linux.kernel-rpi4 -L
-          nix build .#packages.aarch64-linux.kernel-rpi5 -L
+          PKGS=$(nix eval --json .#packages.aarch64-linux --apply 'builtins.attrNames')
+          echo "matrix=$PKGS" >> "$GITHUB_OUTPUT"
 
-  build-pkgs:
+  build:
+    needs: generate-matrix
     runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
       matrix:
-        package:
-          - cf-ddns
-          - dnsr
-          - rpi-vcio
-          - vaultwarden
-          - vaultwarden-vault
-          - cpupower-rpi4
-          - cpupower-rpi5
-          - libraspberrypi
+        package: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup SSH
+      - name: Install SSH Key
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
