@@ -32,7 +32,7 @@ jobs:
           token: ${{ secrets.ATTIC_SECRET }}
 
       - name: Build kernel
-        run: nix build .#legacyPackages.aarch64-linux.linuxPackages_rpi_7_1.kernel -L
+        run: nix build .#packages.aarch64-linux.kernel -L
 
   build-pkgs:
     runs-on: ubuntu-24.04-arm
@@ -70,4 +70,4 @@ jobs:
           token: ${{ secrets.ATTIC_SECRET }}
 
       - name: Build package
-        run: nix build .#legacyPackages.aarch64-linux.${{ matrix.package }} -L
+        run: nix build .#packages.aarch64-linux.${{ matrix.package }} -L
