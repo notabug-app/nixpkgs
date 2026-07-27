@@ -21,6 +21,9 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v27
 
+      - name: Install Attic
+        run: nix profile install nixpkgs#attic-client
+
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0
         with:
@@ -42,6 +45,8 @@ jobs:
           - rpi-vcio
           - vaultwarden
           - vaultwarden-vault
+          - cpupower
+          - libraspberrypi
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,6 +58,9 @@ jobs:
 
       - name: Install Nix
         uses: cachix/install-nix-action@v27
+
+      - name: Install Attic
+        run: nix profile install nixpkgs#attic-client
 
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0

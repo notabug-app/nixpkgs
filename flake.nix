@@ -73,6 +73,8 @@
         }
         // nixpkgs.lib.optionalAttrs (system == "aarch64-linux") {
           kernel = pkgs.linuxPackages_rpi_7_1.kernel;
+          cpupower = pkgs.linuxPackages_rpi_7_1.cpupower;
+          libraspberrypi = pkgs.libraspberrypi;
         }
       );
 
