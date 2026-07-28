@@ -8,7 +8,7 @@ let
 in
 {
   cf = inputs.cf.packages.${sys}.default;
-  dnsr = inputs.dnsr.packages.${sys}.default;
+  void = inputs.void.packages.${sys}.default;
 
   vaultwarden = prev.vaultwarden.overrideAttrs (old: {
     version = "1.37.0";

@@ -82,26 +82,6 @@
         "type": "github"
       }
     },
-    "dnsr": {
-      "inputs": {
-        "crane": "crane_2",
-        "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_2"
-      },
-      "locked": {
-        "lastModified": 1785164653,
-        "narHash": "sha256-oo3qP+kuz8QPVNA6mnXNDup/ldvSWvaEtFls6KkEBAc=",
-        "ref": "refs/heads/main",
-        "rev": "fabe8c30ec89fc8f08992927d741ea5d564ae105",
-        "revCount": 3,
-        "type": "git",
-        "url": "ssh://git@github.com/notabug-app/dnsr.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/notabug-app/dnsr.git"
-      }
-    },
     "flake-compat": {
       "locked": {
         "lastModified": 1767039857,
@@ -261,15 +241,15 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1784497964,
-        "narHash": "sha256-vlHUuqAcbcH2RKmHbPiuQzbv1pnzzavXnI62RD0bqCU=",
-        "owner": "nixos",
+        "lastModified": 1785090369,
+        "narHash": "sha256-m0pDuRJG7EDo9ri+4Ksu83VsI+PlxNC9lNBfydejce4=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "241313f4e8e508cb9b13278c2b0fa25b9ca27163",
+        "rev": "624af665418d3c65d544145b4d34ad696439570e",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
@@ -317,11 +297,11 @@
     "root": {
       "inputs": {
         "cf": "cf",
-        "dnsr": "dnsr",
         "nixos-raspberrypi": "nixos-raspberrypi",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
         "nvmd-rpi": "nvmd-rpi",
         "vaultwarden-src": "vaultwarden-src",
+        "void": "void",
         "webvault-src": "webvault-src"
       }
     },
@@ -370,6 +350,26 @@
         "ref": "1.37.0",
         "repo": "vaultwarden",
         "type": "github"
+      }
+    },
+    "void": {
+      "inputs": {
+        "crane": "crane_2",
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1785260588,
+        "narHash": "sha256-tsZLKnr2UiPv4P9L6cKcLV2cNIsQm9IzNYRMAbEG7xo=",
+        "ref": "refs/heads/main",
+        "rev": "4ae200989ae56fc794ae7e9b20f03b2986618fb7",
+        "revCount": 2,
+        "type": "git",
+        "url": "ssh://git@github.com/notabug-app/void.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/notabug-app/void.git"
       }
     },
     "webvault-src": {

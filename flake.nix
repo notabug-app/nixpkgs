@@ -9,7 +9,7 @@
     };
 
     cf.url = "git+ssh://git@github.com/notabug-app/cf.git";
-    dnsr.url = "git+ssh://git@github.com/notabug-app/dnsr.git";
+    void.url = "git+ssh://git@github.com/notabug-app/void.git";
 
     nvmd-rpi = {
       url = "github:nvmd/nixos-raspberrypi";
@@ -67,7 +67,7 @@
         in
         {
           cf = pkgs.cf;
-          dnsr = pkgs.dnsr;
+          void = pkgs.void;
           vaultwarden = pkgs.vaultwarden;
           vaultwarden-vault = pkgs.vaultwarden-vault;
         }
@@ -94,7 +94,7 @@
 
       nixosModules = nixos-raspberrypi.nixosModules // {
         cf = inputs.cf.nixosModules.default;
-        dnsr = inputs.dnsr.nixosModules.default;
+        void = inputs.void.nixosModules.default;
 
         default =
           {
@@ -107,7 +107,7 @@
             imports = [
               nixos-raspberrypi.nixosModules.default
               inputs.cf.nixosModules.default
-              inputs.dnsr.nixosModules.default
+              inputs.void.nixosModules.default
             ];
 
             nixpkgs.overlays = [ customOverlay ];
