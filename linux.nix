@@ -17,7 +17,7 @@ let
         inherit rpiModel;
         modDirVersion = "7.1.4";
         tag = "rpi-7.1.y";
-        srcHash = "sha256-g/FTvTi4AT2aQgpebUbrt5X+c2ntwQhjc/5k3Fe1kGk=";
+        srcHash = "sha256-v5/IyuFmsvzSOPF2x2PfR0suaX9YpzsTIKTsaLrmPGY=";
       }
     );
 in
