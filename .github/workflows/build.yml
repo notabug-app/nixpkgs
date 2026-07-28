@@ -51,33 +51,6 @@ jobs:
           endpoint: ${{ secrets.ATTIC_URL }}
           cache: ${{ secrets.ATTIC_CACHE }}
           token: ${{ secrets.ATTIC_SECRET }}
-          skip-push: true
-
-      - name: Record store paths before build
-        run: nix path-info --all > /tmp/store-paths-before
 
       - name: Build package
         run: nix build .#packages.aarch64-linux.${{ matrix.package }} -L
-
-      - name: Push to Attic cache (with retry)
-        if: always()
-        run: |
-          nix path-info --all > /tmp/store-paths-after
-          comm -13 <(sort /tmp/store-paths-before) <(sort /tmp/store-paths-after) > /tmp/store-paths-new
-          grep -v '\.drv$' /tmp/store-paths-new > /tmp/store-paths-to-push || true
-          
-          if [ -s /tmp/store-paths-to-push ]; then
-            echo "Pushing $(wc -l < /tmp/store-paths-to-push) paths..."
-            for i in {1..5}; do
-              if attic push --stdin ${{ secrets.ATTIC_CACHE }} < /tmp/store-paths-to-push; then
-                echo "Push successful!"
-                exit 0
-              fi
-              echo "Push failed, retrying in 5 seconds... ($i/5)"
-              sleep 5
-            done
-            echo "Failed to push after 5 attempts."
-            exit 1
-          else
-            echo "No new paths to push."
-          fi
