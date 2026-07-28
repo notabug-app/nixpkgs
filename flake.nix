@@ -8,9 +8,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    cf-ddns.url = "git+ssh://git@github.com/notabug-app/cf-ddns.git";
+    cf.url = "git+ssh://git@github.com/notabug-app/cf.git";
     dnsr.url = "git+ssh://git@github.com/notabug-app/dnsr.git";
-    rpi-vcio.url = "git+ssh://git@github.com/notabug-app/rpi-vcio.git";
 
     nvmd-rpi = {
       url = "github:nvmd/nixos-raspberrypi";
@@ -67,9 +66,8 @@
           pkgs = self.legacyPackages.${system};
         in
         {
-          cf-ddns = pkgs.cf-ddns;
+          cf = pkgs.cf;
           dnsr = pkgs.dnsr;
-          rpi-vcio = pkgs.rpi-vcio;
           vaultwarden = pkgs.vaultwarden;
           vaultwarden-vault = pkgs.vaultwarden-vault;
         }
@@ -95,7 +93,7 @@
       lib = nixos-raspberrypi.lib;
 
       nixosModules = nixos-raspberrypi.nixosModules // {
-        cf-ddns = inputs.cf-ddns.nixosModules.default;
+        cf = inputs.cf.nixosModules.default;
         dnsr = inputs.dnsr.nixosModules.default;
 
         default =
@@ -108,7 +106,7 @@
           {
             imports = [
               nixos-raspberrypi.nixosModules.default
-              inputs.cf-ddns.nixosModules.default
+              inputs.cf.nixosModules.default
               inputs.dnsr.nixosModules.default
             ];
 

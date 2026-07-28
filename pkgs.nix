@@ -7,10 +7,8 @@ let
   sys = prev.stdenv.hostPlatform.system;
 in
 {
-  cf-ddns = inputs.cf-ddns.packages.${sys}.default;
+  cf = inputs.cf.packages.${sys}.default;
   dnsr = inputs.dnsr.packages.${sys}.default;
-  sysmon = inputs.rpi-vcio.packages.${sys}.default;
-  rpi-vcio = inputs.rpi-vcio.packages.${sys}.default;
 
   vaultwarden = prev.vaultwarden.overrideAttrs (old: {
     version = "1.37.0";

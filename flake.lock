@@ -32,24 +32,24 @@
         "type": "github"
       }
     },
-    "cf-ddns": {
+    "cf": {
       "inputs": {
         "crane": "crane",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1785020728,
-        "narHash": "sha256-/XtMeXQPatXoTTY3rWK41/KwYgURaHHNnOTjs0zg4sY=",
-        "ref": "refs/heads/main",
-        "rev": "5eebc42a664be7d119b23fef451f5cb6aba8509c",
-        "revCount": 10,
+        "lastModified": 1785249740,
+        "narHash": "sha256-uwwy8MeWk4rC/55cDIg+/LU0H7t1rnQbfhCqX446xYs=",
+        "ref": "refs/heads/master",
+        "rev": "427af327c383f0f456c2a7a733a6818ed51d8166",
+        "revCount": 1,
         "type": "git",
-        "url": "ssh://git@github.com/notabug-app/cf-ddns.git"
+        "url": "ssh://git@github.com/notabug-app/cf.git"
       },
       "original": {
         "type": "git",
-        "url": "ssh://git@github.com/notabug-app/cf-ddns.git"
+        "url": "ssh://git@github.com/notabug-app/cf.git"
       }
     },
     "crane": {
@@ -168,24 +168,6 @@
         "type": "github"
       }
     },
-    "flake-utils_3": {
-      "inputs": {
-        "systems": "systems_3"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "nixos-images": {
       "inputs": {
         "nixos-stable": [
@@ -263,11 +245,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1784796856,
-        "narHash": "sha256-wWFrV5/Qbm+lyt5x20E/bSbfJiGKMo4RCxZV8cl/WZI=",
+        "lastModified": 1785090369,
+        "narHash": "sha256-m0pDuRJG7EDo9ri+4Ksu83VsI+PlxNC9lNBfydejce4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e2587caef70cea85dd97d7daab492899902dbf5d",
+        "rev": "624af665418d3c65d544145b4d34ad696439570e",
         "type": "github"
       },
       "original": {
@@ -309,22 +291,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
-      "locked": {
-        "lastModified": 1784007870,
-        "narHash": "sha256-djcLt/JJphyNt4eDY9XTly+/WbCK5lqWq9lSgCmJkkQ=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "18b9261cb3294b6d2a06d03f96872827b8fe2698",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nvmd-rpi": {
       "inputs": {
         "argononed": "argononed_2",
@@ -350,33 +316,13 @@
     },
     "root": {
       "inputs": {
-        "cf-ddns": "cf-ddns",
+        "cf": "cf",
         "dnsr": "dnsr",
         "nixos-raspberrypi": "nixos-raspberrypi",
         "nixpkgs": "nixpkgs_3",
         "nvmd-rpi": "nvmd-rpi",
-        "rpi-vcio": "rpi-vcio",
         "vaultwarden-src": "vaultwarden-src",
         "webvault-src": "webvault-src"
-      }
-    },
-    "rpi-vcio": {
-      "inputs": {
-        "flake-utils": "flake-utils_3",
-        "nixpkgs": "nixpkgs_4"
-      },
-      "locked": {
-        "lastModified": 1784122588,
-        "narHash": "sha256-QYOiylbqubCNRPBCyEXIRrKGJ79g3g8hhyw0TvWZdxw=",
-        "ref": "refs/heads/main",
-        "rev": "f9c97b2c1d8641688ea4503ed227eb505136b547",
-        "revCount": 2,
-        "type": "git",
-        "url": "ssh://git@github.com/notabug-app/rpi-vcio.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/notabug-app/rpi-vcio.git"
       }
     },
     "systems": {
@@ -395,21 +341,6 @@
       }
     },
     "systems_2": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
