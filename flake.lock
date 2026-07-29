@@ -359,11 +359,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1785265884,
-        "narHash": "sha256-G2Wnmum+ze6CROrTFFfu//XhIC/2NGg/qzdnB5fXxoQ=",
+        "lastModified": 1785342148,
+        "narHash": "sha256-lKz0dvFB5B7XiXU82Oz5BihTY/lHIFms+EuI/BxsJxo=",
         "ref": "refs/heads/main",
-        "rev": "2b7a965006b361a51447f14483a92635bf08ada2",
-        "revCount": 8,
+        "rev": "e56571dc5177501d647d7237e61b12f4840998c5",
+        "revCount": 13,
         "type": "git",
         "url": "ssh://git@github.com/notabug-app/void.git"
       },
