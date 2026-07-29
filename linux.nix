@@ -15,9 +15,9 @@ let
     prev.linuxPackagesFor (
       prev.callPackage "${inputs.nvmd-rpi}/pkgs/linux-rpi/package.nix" {
         inherit rpiModel;
-        modDirVersion = "7.1.4";
-        tag = "79f8b2304b796b42fa786e7f474650c9e35bd538";
-        srcHash = "sha256-v5/IyuFmsvzSOPF2x2PfR0suaX9YpzsTIKTsaLrmPGY=";
+        modDirVersion = "7.1.5";
+        tag = "183b5f6ee2119b0ef214f6c2a00876b84b866d93";
+        srcHash = "sha256-OYp/cLv7ogxBxvEjpZOaCq+WP9bYyI7t7auD3NE9vVE=";
       }
     );
 in
