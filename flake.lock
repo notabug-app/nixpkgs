@@ -210,11 +210,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785064222,
-        "narHash": "sha256-jILhIBOc0GHvrQrfjBb7AVMeBb0+XL/bRhqev+oz3lg=",
+        "lastModified": 1785528888,
+        "narHash": "sha256-GVslcijyltAInJZ+Bhm3mG6S36itKbngYIaUhj8zr4Y=",
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "7a988e466a9a98196bf1a85d0d594bcc4aa2b82d",
+        "rev": "9e83b722273c73eb7f537bfd5ff592c7efca5600",
         "type": "github"
       },
       "original": {
@@ -281,11 +281,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785064222,
-        "narHash": "sha256-jILhIBOc0GHvrQrfjBb7AVMeBb0+XL/bRhqev+oz3lg=",
+        "lastModified": 1785528888,
+        "narHash": "sha256-GVslcijyltAInJZ+Bhm3mG6S36itKbngYIaUhj8zr4Y=",
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "7a988e466a9a98196bf1a85d0d594bcc4aa2b82d",
+        "rev": "9e83b722273c73eb7f537bfd5ff592c7efca5600",
         "type": "github"
       },
       "original": {
