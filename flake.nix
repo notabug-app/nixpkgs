@@ -17,7 +17,7 @@
     };
 
     vaultwarden-src = {
-      url = "github:dani-garcia/vaultwarden/1.37.0";
+      url = "github:dani-garcia/vaultwarden/1.37.1";
       flake = false;
     };
     webvault-src = {

@@ -241,11 +241,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1785318670,
-        "narHash": "sha256-dN6Ou5x/+23FZLEpYP3IffO+NyJFzUlGumt1uu3MMaY=",
+        "lastModified": 1785454630,
+        "narHash": "sha256-LQy14TZp77TwbQf40gg1V3jo8FwJG0jGDkAH+zRHqg8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0954f7ee2f6bb3dc7d4e3d0d8bcb8fd4bde4cfc5",
+        "rev": "1559d3daa3ecc813a650b79375ea61b6741b8746",
         "type": "github"
       },
       "original": {
@@ -338,16 +338,16 @@
     "vaultwarden-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784910452,
-        "narHash": "sha256-7l9tIBCfk8DeQDtIoENnjGUzVWJM3aZxw6eA+YaktlM=",
+        "lastModified": 1785330824,
+        "narHash": "sha256-QS9dUOlId4LT6rNgLwVxShX3xpnykpbiFsc0x88Bojc=",
         "owner": "dani-garcia",
         "repo": "vaultwarden",
-        "rev": "46ae59eaf444f0ae0a799070cf2bd6c415284a51",
+        "rev": "2629bcbe1380c894e3a7f52cafcac3988edb8fbb",
         "type": "github"
       },
       "original": {
         "owner": "dani-garcia",
-        "ref": "1.37.0",
+        "ref": "1.37.1",
         "repo": "vaultwarden",
         "type": "github"
       }

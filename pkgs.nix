@@ -11,7 +11,7 @@ in
   void = inputs.void.packages.${sys}.default;
 
   vaultwarden = prev.vaultwarden.overrideAttrs (old: {
-    version = "1.37.0";
+    version = "1.37.1";
     src = inputs.vaultwarden-src;
     cargoDeps = prev.rustPlatform.importCargoLock {
       lockFile = "${inputs.vaultwarden-src}/Cargo.lock";
