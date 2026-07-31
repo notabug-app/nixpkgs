@@ -10,7 +10,7 @@ in
   cf = inputs.cf.packages.${sys}.default;
   void = inputs.void.packages.${sys}.default;
 
-  vaultwarden = prev.vaultwarden.overrideAttrs (old: {
+  vaultwarden = (prev.vaultwarden.override { dbBackend = "postgresql"; }).overrideAttrs (old: {
     version = "1.37.1";
     src = inputs.vaultwarden-src;
     cargoDeps = prev.rustPlatform.importCargoLock {
