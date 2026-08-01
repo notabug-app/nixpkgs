@@ -15,15 +15,15 @@ let
     prev.linuxPackagesFor (
       prev.callPackage "${inputs.nvmd-rpi}/pkgs/linux-rpi/package.nix" {
         inherit rpiModel;
-        modDirVersion = "7.2.0-rc5";
-        tag = "40608a2182511a06de4cae92c6290199ffd3fbfd";
-        srcHash = "sha256-Dtab1vlX/2xoVmY47klVfBH/DILSHngmqNnouJ1tvss=";
+        modDirVersion = "7.1.5";
+        tag = "183b5f6ee2119b0ef214f6c2a00876b84b866d93";
+        srcHash = "sha256-OYp/cLv7ogxBxvEjpZOaCq+WP9bYyI7t7auD3NE9vVE=";
       }
     );
 in
 prev.lib.listToAttrs (
   map (model: {
-    name = "linuxPackages_rpi${model}_7_2";
+    name = "linuxPackages_rpi${model}_7_1";
     value = mkLinuxPackages model;
   }) models
 )
