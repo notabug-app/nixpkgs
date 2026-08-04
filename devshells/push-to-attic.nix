@@ -19,10 +19,7 @@ pkgs.writeShellApplication {
 
     CACHE=$1
 
-    if [ -n "''${ATTIC_URL:-}" ] && [ -n "''${ATTIC_SECRET:-}" ]; then
-      echo "Authenticating with Attic..."
-      attic login default "$ATTIC_URL" "$ATTIC_SECRET" --set-default
-    fi
+
 
     nix path-info --all > /tmp/store-paths-after
     comm -13 <(sort /tmp/store-paths-before) <(sort /tmp/store-paths-after) > /tmp/store-paths-new
