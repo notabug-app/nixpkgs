@@ -43,13 +43,7 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
 
 
-      - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
-        with:
-          endpoint: ${{ secrets.ATTIC_URL }}
-          cache: ${{ secrets.ATTIC_CACHE }}
-          token: ${{ secrets.ATTIC_SECRET }}
-          skip-push: true
+
 
       - name: Record store paths before build
         run: nix develop -c record-store-paths
@@ -59,4 +53,7 @@ jobs:
 
       - name: Push to Attic cache (with retry)
         if: always()
+        env:
+          ATTIC_URL: ${{ secrets.ATTIC_URL }}
+          ATTIC_SECRET: ${{ secrets.ATTIC_SECRET }}
         run: nix develop -c push-to-attic ${{ secrets.ATTIC_CACHE }}
