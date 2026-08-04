@@ -13,13 +13,13 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Generate Matrix
+      - name: Generate Package Matrix
         id: set-matrix
         run: nix develop -c generate-matrix
 
@@ -31,10 +31,10 @@ jobs:
       matrix:
         package: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install SSH Key
+      - name: Setup SSH Key
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -45,19 +45,19 @@ jobs:
 
 
 
-      - name: Setup Attic cache
+      - name: Configure Attic Cache
         env:
           ATTIC_URL: ${{ secrets.ATTIC_URL }}
           ATTIC_SECRET: ${{ secrets.ATTIC_SECRET }}
         run: nix develop -c setup-attic ${{ secrets.ATTIC_CACHE }}
 
-      - name: Record store paths before build
+      - name: Record Store Paths (Pre-build)
         run: nix develop -c record-store-paths
 
-      - name: Build package
+      - name: Build Nix Package
         run: nix build .#packages.aarch64-linux.${{ matrix.package }} -L
 
-      - name: Push to Attic cache (with retry)
+      - name: Push Built Paths to Attic Cache
         if: always()
         env:
           ATTIC_URL: ${{ secrets.ATTIC_URL }}

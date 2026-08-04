@@ -11,10 +11,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup SSH
+      - name: Setup SSH Key
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -22,13 +22,13 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Update vaultwarden
+      - name: Update Vaultwarden Source
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: nix develop -c update-vaultwarden
 
-      - name: Update flake
+      - name: Update Flake Inputs
         run: nix flake update
 
-      - name: Commit and push
+      - name: Commit and Push Changes
         run: nix develop -c commit-update
