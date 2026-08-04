@@ -1,7 +1,7 @@
-{
-  final,
-  prev,
-  inputs,
+{ final
+, prev
+, inputs
+,
 }:
 let
   sys = prev.stdenv.hostPlatform.system;

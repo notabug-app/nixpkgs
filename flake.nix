@@ -27,11 +27,10 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixos-raspberrypi,
-      ...
+    { self
+    , nixpkgs
+    , nixos-raspberrypi
+    , ...
     }@inputs:
     let
       customOverlay =
@@ -103,11 +102,10 @@
         void = inputs.void.nixosModules.default;
 
         default =
-          {
-            pkgs,
-            lib,
-            config,
-            ...
+          { pkgs
+          , lib
+          , config
+          , ...
           }:
           {
             imports = [
