@@ -23,7 +23,7 @@ pkgs.writeShellApplication {
 
     nix path-info --all > /tmp/store-paths-after
     comm -13 <(sort /tmp/store-paths-before) <(sort /tmp/store-paths-after) > /tmp/store-paths-new
-    
+
     # Only push paths built locally (no signatures from binary caches)
     if [ -s /tmp/store-paths-new ]; then
       # shellcheck disable=SC2046
@@ -33,7 +33,7 @@ pkgs.writeShellApplication {
     else
       touch /tmp/store-paths-to-push
     fi
-    
+
     if [ -s /tmp/store-paths-to-push ]; then
       echo "Pushing $(wc -l < /tmp/store-paths-to-push) paths..."
       for i in {1..5}; do

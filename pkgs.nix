@@ -1,7 +1,7 @@
-{ final
-, prev
-, inputs
-,
+{
+  final,
+  prev,
+  inputs,
 }:
 let
   sys = prev.stdenv.hostPlatform.system;
@@ -9,6 +9,7 @@ in
 {
   cf = inputs.cf.packages.${sys}.default;
   void = inputs.void.packages.${sys}.default;
+  firn = inputs.firn.packages.${sys}.default;
 
   vaultwarden = (prev.vaultwarden.override { dbBackend = "postgresql"; }).overrideAttrs (old: {
     version = "1.37.1";

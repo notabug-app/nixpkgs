@@ -10,6 +10,7 @@
 
     cf.url = "git+ssh://git@github.com/notabug-app/cf.git";
     void.url = "git+ssh://git@github.com/notabug-app/void.git";
+    firn.url = "git+ssh://git@github.com/notabug-app/firn.git";
 
     nvmd-rpi = {
       url = "github:nvmd/nixos-raspberrypi";
@@ -27,10 +28,11 @@
   };
 
   outputs =
-    { self
-    , nixpkgs
-    , nixos-raspberrypi
-    , ...
+    {
+      self,
+      nixpkgs,
+      nixos-raspberrypi,
+      ...
     }@inputs:
     let
       customOverlay =
@@ -73,6 +75,7 @@
         {
           cf = pkgs.cf;
           void = pkgs.void;
+          firn = pkgs.firn;
           vaultwarden = pkgs.vaultwarden;
           vaultwarden-vault = pkgs.vaultwarden-vault;
         }
@@ -93,32 +96,37 @@
         }
       );
 
-
-
       lib = nixos-raspberrypi.lib;
 
       nixosModules = nixos-raspberrypi.nixosModules // {
         cf = inputs.cf.nixosModules.default;
         void = inputs.void.nixosModules.default;
+        firn = inputs.firn.nixosModules.default;
 
         default =
-          { pkgs
-          , lib
-          , config
-          , ...
+          {
+            pkgs,
+            lib,
+            config,
+            ...
           }:
           {
             imports = [
               nixos-raspberrypi.nixosModules.default
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
+              inputs.firn.nixosModules.default
             ];
 
             nixpkgs.overlays = [ customOverlay ];
 
             boot.kernelPackages = lib.mkMerge [
-              (lib.mkIf (config.boot.loader.raspberry-pi.variant == "4") (lib.mkForce pkgs.linuxPackages_rpi4_7_1))
-              (lib.mkIf (config.boot.loader.raspberry-pi.variant == "5") (lib.mkForce pkgs.linuxPackages_rpi5_7_1))
+              (lib.mkIf (config.boot.loader.raspberry-pi.variant == "4") (
+                lib.mkForce pkgs.linuxPackages_rpi4_7_1
+              ))
+              (lib.mkIf (config.boot.loader.raspberry-pi.variant == "5") (
+                lib.mkForce pkgs.linuxPackages_rpi5_7_1
+              ))
             ];
 
             assertions = [
