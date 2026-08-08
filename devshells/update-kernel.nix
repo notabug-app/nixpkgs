@@ -72,6 +72,16 @@ pkgs.writeShellApplication {
 
     sed -i -E "s/linuxPackages_rpi([45])_[0-9]+_[0-9]+/linuxPackages_rpi\1_''${NEW_SUFFIX}/g" flake.nix
 
+    echo "Committing changes..."
+    git add linux.nix flake.nix
+    if ! git diff --cached --quiet; then
+        SHORT_COMMIT="''${COMMIT:0:7}"
+        git commit -m "chore(kernel): update to $MOD_DIR_VERSION ($SHORT_COMMIT)"
+        echo "Changes committed!"
+    else
+        echo "No changes to commit."
+    fi
+
     echo "Done!"
   '';
 }
