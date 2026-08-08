@@ -80,10 +80,10 @@
           vaultwarden-vault = pkgs.vaultwarden-vault;
         }
         // nixpkgs.lib.optionalAttrs (system == "aarch64-linux") {
-          kernel-rpi4 = pkgs.linuxPackages_rpi4_7_2.kernel;
-          cpupower-rpi4 = pkgs.linuxPackages_rpi4_7_2.cpupower;
-          kernel-rpi5 = pkgs.linuxPackages_rpi5_7_2.kernel;
-          cpupower-rpi5 = pkgs.linuxPackages_rpi5_7_2.cpupower;
+          kernel-rpi4 = pkgs.linuxPackages_rpi4_7_1.kernel;
+          cpupower-rpi4 = pkgs.linuxPackages_rpi4_7_1.cpupower;
+          kernel-rpi5 = pkgs.linuxPackages_rpi5_7_1.kernel;
+          cpupower-rpi5 = pkgs.linuxPackages_rpi5_7_1.cpupower;
           libraspberrypi = pkgs.libraspberrypi;
         }
       );
@@ -122,10 +122,10 @@
 
             boot.kernelPackages = lib.mkMerge [
               (lib.mkIf (config.boot.loader.raspberry-pi.variant == "4") (
-                lib.mkForce pkgs.linuxPackages_rpi4_7_2
+                lib.mkForce pkgs.linuxPackages_rpi4_7_1
               ))
               (lib.mkIf (config.boot.loader.raspberry-pi.variant == "5") (
-                lib.mkForce pkgs.linuxPackages_rpi5_7_2
+                lib.mkForce pkgs.linuxPackages_rpi5_7_1
               ))
             ];
 
