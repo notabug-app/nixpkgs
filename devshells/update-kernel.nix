@@ -37,13 +37,14 @@ pkgs.writeShellApplication {
     VERSION=$(echo "$MAKEFILE_CONTENT" | grep -E '^VERSION = ' | awk '{print $3}')
     PATCHLEVEL=$(echo "$MAKEFILE_CONTENT" | grep -E '^PATCHLEVEL = ' | awk '{print $3}')
     SUBLEVEL=$(echo "$MAKEFILE_CONTENT" | grep -E '^SUBLEVEL = ' | awk '{print $3}')
+    EXTRAVERSION=$(echo "$MAKEFILE_CONTENT" | grep -E '^EXTRAVERSION = ' | awk '{print $3}')
 
     if [ -z "$VERSION" ] || [ -z "$PATCHLEVEL" ] || [ -z "$SUBLEVEL" ]; then
         echo "Error parsing Makefile for version"
         exit 1
     fi
 
-    MOD_DIR_VERSION="''${VERSION}.''${PATCHLEVEL}.''${SUBLEVEL}"
+    MOD_DIR_VERSION="''${VERSION}.''${PATCHLEVEL}.''${SUBLEVEL}''${EXTRAVERSION}"
     echo "Kernel version: $MOD_DIR_VERSION"
 
     echo "Calculating nix hash... (this may take a while)"
