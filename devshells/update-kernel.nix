@@ -37,7 +37,7 @@ pkgs.writeShellApplication {
     VERSION=$(echo "$MAKEFILE_CONTENT" | grep -E '^VERSION = ' | awk '{print $3}')
     PATCHLEVEL=$(echo "$MAKEFILE_CONTENT" | grep -E '^PATCHLEVEL = ' | awk '{print $3}')
     SUBLEVEL=$(echo "$MAKEFILE_CONTENT" | grep -E '^SUBLEVEL = ' | awk '{print $3}')
-    EXTRAVERSION=$(echo "$MAKEFILE_CONTENT" | grep -E '^EXTRAVERSION = ' | awk '{print $3}')
+    EXTRAVERSION=$(echo "$MAKEFILE_CONTENT" | grep -E '^EXTRAVERSION =' | awk '{print $3}' || true)
 
     if [ -z "$VERSION" ] || [ -z "$PATCHLEVEL" ] || [ -z "$SUBLEVEL" ]; then
         echo "Error parsing Makefile for version"
