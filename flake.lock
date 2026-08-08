@@ -164,11 +164,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1785961683,
-        "narHash": "sha256-YNmKZtGWkDifzByee+HEcwY5EdVppwmmLbYiABJQ3S8=",
+        "lastModified": 1786201127,
+        "narHash": "sha256-acyrnUpMULRIKh+kKV1qholdbh3jgd5NS+L+lbqbuqM=",
         "ref": "refs/heads/main",
-        "rev": "7f40263a213074e1e61ec5a84111c6adb67bfecf",
-        "revCount": 19,
+        "rev": "c78ef98de3708e43a3bb67a53475c7b1c56111f7",
+        "revCount": 30,
         "type": "git",
         "url": "ssh://git@github.com/notabug-app/firn.git"
       },
@@ -452,11 +452,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786109169,
-        "narHash": "sha256-sgP9u4HmTlBxnV3Q7vQoOncPfebuiAR6wo/fzv0xjIs=",
+        "lastModified": 1786195194,
+        "narHash": "sha256-ByCEtIca7thZaAbtAowVPrlK8MsiSxnWBPmTcYckZik=",
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "893b59f69704b02ee32a84bb3c0ff9e924f250c9",
+        "rev": "0157413b0ef023ace460c34d15724c2d073de72a",
         "type": "github"
       },
       "original": {
@@ -587,11 +587,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786109169,
-        "narHash": "sha256-sgP9u4HmTlBxnV3Q7vQoOncPfebuiAR6wo/fzv0xjIs=",
+        "lastModified": 1786195194,
+        "narHash": "sha256-ByCEtIca7thZaAbtAowVPrlK8MsiSxnWBPmTcYckZik=",
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "893b59f69704b02ee32a84bb3c0ff9e924f250c9",
+        "rev": "0157413b0ef023ace460c34d15724c2d073de72a",
         "type": "github"
       },
       "original": {
