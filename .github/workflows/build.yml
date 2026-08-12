@@ -33,8 +33,38 @@ jobs:
         id: set-matrix
         run: nix develop -c generate-matrix
 
+  build-aarch64-firn:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            accept-flake-config = true
+            extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
+            extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdvcA6sOqDdldXy+WeYNXspp09Jq/s=
+
+      - name: Configure Firn Cache
+        run: nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }}
+
+      - name: Build Firn (aarch64)
+        run: nix build .#packages.aarch64-linux.firn -L
+
+      - name: Push Built Paths to Firn Cache
+        if: always()
+        run: nix run .#firn -- push --include-drv --include-error-logs ./result
+
   build:
-    needs: generate-matrix
+    needs: [generate-matrix, build-aarch64-firn]
     runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
