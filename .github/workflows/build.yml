@@ -50,12 +50,6 @@ jobs:
 
 
 
-      - name: Configure Attic Cache
-        env:
-          ATTIC_URL: ${{ secrets.ATTIC_URL }}
-          ATTIC_SECRET: ${{ secrets.ATTIC_SECRET }}
-        run: nix develop -c setup-attic ${{ secrets.ATTIC_CACHE }}
-
       - name: Record Store Paths (Pre-build)
         run: nix develop -c record-store-paths
 
