@@ -30,6 +30,12 @@ pkgs.writeShellApplication {
     fi
     echo "Latest commit: $COMMIT"
 
+    CURRENT_COMMIT=$(grep 'tag =' linux.nix | cut -d'"' -f2 || true)
+    if [ "$COMMIT" = "$CURRENT_COMMIT" ]; then
+        echo "Already at latest commit ($COMMIT). Exiting."
+        exit 0
+    fi
+
     echo "Fetching Makefile to determine modDirVersion..."
     MAKEFILE_URL="https://raw.githubusercontent.com/raspberrypi/linux/''${COMMIT}/Makefile"
     MAKEFILE_CONTENT=$(curl -sSL "$MAKEFILE_URL")
@@ -75,6 +81,19 @@ pkgs.writeShellApplication {
     echo "Committing changes..."
     git add linux.nix flake.nix
     if ! git diff --cached --quiet; then
+        echo ""
+        echo "Changes:"
+        git diff --cached --stat
+        echo ""
+        git diff --cached --color=always
+        echo ""
+        
+        read -r -p "Commit these changes? [y/N] " ans
+        if [[ ! "$ans" =~ ^[Yy]$ ]]; then
+            echo "Aborting commit."
+            exit 1
+        fi
+        
         SHORT_COMMIT="''${COMMIT:0:7}"
         git commit -m "chore(kernel): update to $MOD_DIR_VERSION ($SHORT_COMMIT)"
         echo "Changes committed!"
