@@ -85,6 +85,7 @@
           kernel-rpi5 = pkgs.linuxPackages_rpi5_7_1.kernel;
           cpupower-rpi5 = pkgs.linuxPackages_rpi5_7_1.cpupower;
           libraspberrypi = pkgs.libraspberrypi;
+          raspberrypi-utils = pkgs.raspberrypi-utils;
         }
       );
 
