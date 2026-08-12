@@ -84,8 +84,8 @@
           cpupower-rpi4 = pkgs.linuxPackages_rpi4_7_1.cpupower;
           kernel-rpi5 = pkgs.linuxPackages_rpi5_7_1.kernel;
           cpupower-rpi5 = pkgs.linuxPackages_rpi5_7_1.cpupower;
-          libraspberrypi = pkgs.libraspberrypi;
-          raspberrypi-utils = pkgs.raspberrypi-utils;
+          libraspberrypi = nixos-raspberrypi.packages.${system}.libraspberrypi;
+          raspberrypi-utils = nixos-raspberrypi.packages.${system}.raspberrypi-utils;
         }
       );
 
