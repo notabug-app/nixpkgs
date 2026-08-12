@@ -67,10 +67,6 @@ jobs:
       - name: Build Nix Package
         run: nix build .#packages.aarch64-linux.${{ matrix.package }} -L
 
-      - name: Push Built Paths to Attic Cache (Temporary Catch-22 Fix)
-        if: always()
-        run: nix develop -c push-to-attic ${{ secrets.ATTIC_CACHE }}
-
       - name: Push Built Paths to Firn Cache
         if: always()
         run: nix run .#firn -- push --include-drv --include-error-logs ./result
