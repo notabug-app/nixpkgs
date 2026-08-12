@@ -28,7 +28,7 @@ jobs:
             accept-flake-config = true
             extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdvcA6sOqDdldXy+WeYNXspp09Jq/s=
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
       - name: Generate Package Matrix
         id: set-matrix
         run: nix develop -c generate-matrix
@@ -51,7 +51,7 @@ jobs:
             accept-flake-config = true
             extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdvcA6sOqDdldXy+WeYNXspp09Jq/s=
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
       - name: Configure Firn Cache
         run: nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }}
@@ -86,7 +86,7 @@ jobs:
             accept-flake-config = true
             extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdvcA6sOqDdldXy+WeYNXspp09Jq/s=
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
 
 
@@ -120,7 +120,7 @@ jobs:
             accept-flake-config = true
             extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdvcA6sOqDdldXy+WeYNXspp09Jq/s=
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
       - name: Configure Firn Cache
         run: nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }}
