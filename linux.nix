@@ -5,15 +5,13 @@
 }:
 let
   models = [
-    "02"
-    "3"
     "4"
     "5"
   ];
   mkLinuxPackages =
     rpiModel:
     prev.linuxPackagesFor (
-      prev.callPackage "${inputs.nvmd-rpi}/pkgs/linux-rpi/package.nix" {
+      prev.callPackage "${inputs.nixos-raspberrypi}/pkgs/linux-rpi/package.nix" {
         inherit rpiModel;
         modDirVersion = "7.1.8";
         tag = "db6416f1b6285aca5374ce23ed3b2fb07bf7529e";

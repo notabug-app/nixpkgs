@@ -8,14 +8,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    cf.url = "git+ssh://git@github.com/notabug-app/cf.git";
-    void.url = "git+ssh://git@github.com/notabug-app/void.git";
-    firn.url = "git+ssh://git@github.com/notabug-app/firn.git";
-
-    nvmd-rpi = {
-      url = "github:nvmd/nixos-raspberrypi";
+    cf = {
+      url = "git+ssh://git@github.com/notabug-app/cf.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    void = {
+      url = "git+ssh://git@github.com/notabug-app/void.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    firn = {
+      url = "git+ssh://git@github.com/notabug-app/firn.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
 
     vaultwarden-src = {
       url = "github:dani-garcia/vaultwarden/1.37.1";
@@ -57,7 +62,7 @@
             nativeBuildInputs = [
               (pkgs.callPackage ./devshells/update-vaultwarden.nix { })
               (pkgs.callPackage ./devshells/update-kernel.nix { })
-              (pkgs.callPackage ./devshells/record-store-paths.nix { })
+
               (pkgs.callPackage ./devshells/commit-update.nix { })
               (pkgs.callPackage ./devshells/generate-matrix.nix { })
             ];

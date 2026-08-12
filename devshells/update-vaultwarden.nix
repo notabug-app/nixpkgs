@@ -26,8 +26,7 @@ pkgs.writeShellApplication {
     sed -i -E '/vaultwarden =/,/version = /s/version = "[^"]*"/version = "'"$VW_VERSION"'"/' pkgs.nix
     sed -i -E '/vaultwarden-vault =/,/version = /s/version = "[^"]*"/version = "'"$WEB_TAG"'"/' pkgs.nix
 
-    echo "Updating flake.lock..."
-    nix flake update vaultwarden-src webvault-src
+
     echo "Done!"
   '';
 }
