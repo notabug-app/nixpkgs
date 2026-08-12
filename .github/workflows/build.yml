@@ -16,6 +16,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
@@ -54,12 +59,16 @@ jobs:
       - name: Record Store Paths (Pre-build)
         run: nix develop -c record-store-paths
 
+      - name: Configure Firn Cache
+        run: nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }}
+
+
+
       - name: Build Nix Package
         run: nix build .#packages.aarch64-linux.${{ matrix.package }} -L
 
-      - name: Push Built Paths to Attic Cache
+
+
+      - name: Push Built Paths to Firn Cache
         if: always()
-        env:
-          ATTIC_URL: ${{ secrets.ATTIC_URL }}
-          ATTIC_SECRET: ${{ secrets.ATTIC_SECRET }}
-        run: nix develop -c push-to-attic ${{ secrets.ATTIC_CACHE }}
+        run: nix run .#firn -- push --include-drv --include-error-logs ./result
