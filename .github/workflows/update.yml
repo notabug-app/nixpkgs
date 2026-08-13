@@ -25,16 +25,16 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: |
-            netrc-file = /etc/nix/netrc
             accept-flake-config = true
-            extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
+            extra-substituters = https://crane.cachix.org
+            extra-trusted-substituters = https://crane.cachix.org
+            extra-trusted-public-keys = crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
-      - name: Authenticate to Firn Cache (nix.conf)
-        run: |
-          HOST=$(echo "${{ secrets.FIRN_URL }}" | awk -F/ '{print $3}')
-          echo "machine $HOST password ${{ secrets.FIRN_SECRET }}" | sudo tee -a /etc/nix/netrc > /dev/null
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: notabug
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Update Vaultwarden Source
         env:
