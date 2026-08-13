@@ -152,11 +152,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1786547957,
-        "narHash": "sha256-UpU7+sU2FdZ0wYrbvVnDT/WwXclENH00SdIwSObPl2c=",
+        "lastModified": 1786611295,
+        "narHash": "sha256-UhHfUDxCgNnwj32FkcMknhUqxTIiLTZsg+V0TJ6D+Lw=",
         "ref": "refs/heads/main",
-        "rev": "5e7f54551a4d2d2a2f3d6848d3956efabb538b4c",
-        "revCount": 50,
+        "rev": "02be00aa9c41726aca1ce84d3eeb8af4e7cc3340",
+        "revCount": 52,
         "type": "git",
         "url": "ssh://git@github.com/notabug-app/firn.git"
       },
@@ -462,11 +462,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1786384358,
-        "narHash": "sha256-RzPPiWeUtuvymnpuEWsdtzli5w4kjZs49FqEs3/1u+I=",
+        "lastModified": 1786514691,
+        "narHash": "sha256-9dkt1i5JNbEfPb+EjLcSDNs8zqEHQ/1JlSaKgj0SBAg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2fcb964de67fcf60b43471c55d5d99e61a9ccb5a",
+        "rev": "867dcbc30bafe3c862ef88620f2e7a109d7d3be5",
         "type": "github"
       },
       "original": {
@@ -520,11 +520,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1786507911,
-        "narHash": "sha256-w5aZRLbiu7H6TqsYXVMdRKg0S4DRaJpxyqxx86AwxVk=",
+        "lastModified": 1786594607,
+        "narHash": "sha256-5f9qi0HFGX07xuLG4X7MVsXb6imb1pEhEhlYB+ts4Xk=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "39db48099ad16834af7e27485a4babf9c28b3897",
+        "rev": "cb8f92ed710cb8402805a509d4083418b5435edb",
         "type": "github"
       },
       "original": {
