@@ -25,10 +25,16 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: |
+            netrc-file = /etc/nix/netrc
             accept-flake-config = true
-            extra-substituters = https://crane.cachix.org
-            extra-trusted-substituters = https://crane.cachix.org
-            extra-trusted-public-keys = crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
+            extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
+            extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
+            extra-trusted-public-keys = firn:${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
+
+      - name: Authenticate to Firn Cache
+        run: |
+          nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }} --netrc /tmp/netrc
+          sudo cp /tmp/netrc /etc/nix/netrc
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
