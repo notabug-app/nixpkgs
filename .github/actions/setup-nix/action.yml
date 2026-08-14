@@ -16,7 +16,6 @@ runs:
       uses: DeterminateSystems/nix-installer-action@main
       with:
         extra-conf: |
-          netrc-file = /etc/nix/netrc
           accept-flake-config = true
 
     - name: Setup Crane Cachix
