@@ -152,11 +152,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1786710925,
-        "narHash": "sha256-kGp6Wv/UMecVNSv3pGLpV2Sa8Au67AkLCfjdPTP4thk=",
+        "lastModified": 1786711964,
+        "narHash": "sha256-rsHY5HQU4oQx2uzvqwl6pp4DDfNd0v3FX8SJvBihG3w=",
         "ref": "refs/heads/main",
-        "rev": "d99ee6b9e05cbcf6bee5f5514b894ba7def61010",
-        "revCount": 85,
+        "rev": "94357ce5f7a0e02fc374048ca42305070dbc18d6",
+        "revCount": 86,
         "type": "git",
         "url": "ssh://git@github.com/notabug-app/firn.git"
       },
