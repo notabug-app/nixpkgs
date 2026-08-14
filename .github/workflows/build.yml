@@ -9,7 +9,6 @@ on:
 
 jobs:
   generate-matrix:
-    needs: [build-aarch64-firn, build-x86_64-firn]
     runs-on: ubuntu-24.04-arm
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -21,31 +20,10 @@ jobs:
         uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          firn-url: ${{ secrets.FIRN_URL }}
-          firn-pkey: ${{ secrets.FIRN_PKEY }}
-          firn-secret: ${{ secrets.FIRN_SECRET }}
 
       - name: Generate Package Matrix
         id: set-matrix
         run: nix develop -c generate-matrix
-
-  build-aarch64-firn:
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Nix Environment
-        uses: ./.github/actions/setup-nix
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          firn-url: ${{ secrets.FIRN_URL }}
-          firn-pkey: ${{ secrets.FIRN_PKEY }}
-          firn-secret: ${{ secrets.FIRN_SECRET }}
-
-      - name: Push to Firn Cache
-        if: always()
-        run: nix run .#firn -- push --include-drv --include-error-logs --include-ls ./result
 
   build:
     needs: generate-matrix
@@ -62,30 +40,6 @@ jobs:
         uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          firn-url: ${{ secrets.FIRN_URL }}
-          firn-pkey: ${{ secrets.FIRN_PKEY }}
-          firn-secret: ${{ secrets.FIRN_SECRET }}
-
-      - name: Build Nix Package
-        run: nix build .#packages.aarch64-linux.${{ matrix.package }} -L
-
-      - name: Push to Firn Cache
-        if: always()
-        run: nix run .#firn -- push --include-drv --include-error-logs --include-ls ./result
-
-  build-x86_64-firn:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Nix Environment
-        uses: ./.github/actions/setup-nix
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          firn-url: ${{ secrets.FIRN_URL }}
-          firn-pkey: ${{ secrets.FIRN_PKEY }}
-          firn-secret: ${{ secrets.FIRN_SECRET }}
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -93,6 +47,5 @@ jobs:
           name: notabug
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Push to Firn Cache
-        if: always()
-        run: nix run .#firn -- push --include-drv --include-error-logs --include-ls ./result
+      - name: Build Nix Package
+        run: nix build .#packages.aarch64-linux.${{ matrix.package }} -L

@@ -1,17 +1,8 @@
 name: "Setup Nix Environment"
-description: "Checkout, setup SSH, install Nix, and setup Firn Cache"
+description: "Checkout, setup SSH, install Nix"
 inputs:
   ssh-private-key:
     description: "SSH Private Key"
-    required: true
-  firn-url:
-    description: "Firn URL"
-    required: true
-  firn-pkey:
-    description: "Firn Public Key"
-    required: true
-  firn-secret:
-    description: "Firn Secret"
     required: true
 runs:
   using: "composite"
@@ -27,18 +18,8 @@ runs:
         extra-conf: |
           netrc-file = /etc/nix/netrc
           accept-flake-config = true
-          extra-substituters = ${{ inputs.firn-url }}
-          extra-trusted-substituters = ${{ inputs.firn-url }}
-          extra-trusted-public-keys = ${{ inputs.firn-pkey }}
 
     - name: Setup Crane Cachix
       uses: cachix/cachix-action@v15
       with:
         name: crane
-
-    - name: Setup Firn Cache
-      env:
-        FIRN_SERVER_URL: ${{ inputs.firn-url }}
-        FIRN_TOKEN: ${{ inputs.firn-secret }}
-      run: nix develop -c setup-firn
-      shell: bash

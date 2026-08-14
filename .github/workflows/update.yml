@@ -20,9 +20,6 @@ jobs:
         uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          firn-url: ${{ secrets.FIRN_URL }}
-          firn-pkey: ${{ secrets.FIRN_PKEY }}
-          firn-secret: ${{ secrets.FIRN_SECRET }}
 
       - name: Update Vaultwarden Source
         env:
