@@ -47,15 +47,15 @@ jobs:
       - name: Setup Firn Cache
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
-          echo "machine ${{ vars.FIRN_HOST }} password ${{ secrets.FIRN_TOKEN }}" > $HOME/.netrc
+          echo "machine ${{ secrets.FIRN_HOST }} password ${{ secrets.FIRN_TOKEN }}" > $HOME/.netrc
           echo "netrc-file = $HOME/.netrc" >> ~/.config/nix/nix.conf
-          echo "substituters = https://cache.nixos.org ${{ vars.FIRN_URL }}" >> ~/.config/nix/nix.conf
-          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ${{ vars.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
+          echo "substituters = https://cache.nixos.org ${{ secrets.FIRN_URL }}" >> ~/.config/nix/nix.conf
+          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ${{ secrets.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
 
       - name: Build and Push Firn
         run: |
           nix build .#packages.${{ matrix.system }}.firn -L
-          ./result/bin/firn login --server-url ${{ vars.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
+          ./result/bin/firn login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
           ./result/bin/firn push ./result
 
   build:
@@ -76,13 +76,13 @@ jobs:
       - name: Setup Firn Cache
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
-          echo "machine ${{ vars.FIRN_HOST }} password ${{ secrets.FIRN_TOKEN }}" > $HOME/.netrc
+          echo "machine ${{ secrets.FIRN_HOST }} password ${{ secrets.FIRN_TOKEN }}" > $HOME/.netrc
           echo "netrc-file = $HOME/.netrc" >> ~/.config/nix/nix.conf
-          echo "substituters = https://cache.nixos.org ${{ vars.FIRN_URL }}" >> ~/.config/nix/nix.conf
-          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ${{ vars.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
+          echo "substituters = https://cache.nixos.org ${{ secrets.FIRN_URL }}" >> ~/.config/nix/nix.conf
+          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ${{ secrets.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
 
       - name: Login to Firn Cache
-        run: nix run .#packages.${{ matrix.system }}.firn -- login --server-url ${{ vars.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
+        run: nix run .#packages.${{ matrix.system }}.firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
 
       - name: Build Target Package
         run: nix build .#packages.${{ matrix.system }}.${{ matrix.package }} -L
