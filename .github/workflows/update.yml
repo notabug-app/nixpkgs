@@ -16,32 +16,13 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Setup SSH Key
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Setup Nix Environment
+        uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-        with:
-          extra-conf: |
-            netrc-file = /etc/nix/netrc
-            accept-flake-config = true
-            extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
-
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: notabug
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-
-      - name: Setup Firn Cache
-        env:
-          FIRN_URL: ${{ secrets.FIRN_URL }}
-          FIRN_SECRET: ${{ secrets.FIRN_SECRET }}
-        run: nix develop -c setup-firn
+          firn-url: ${{ secrets.FIRN_URL }}
+          firn-pkey: ${{ secrets.FIRN_PKEY }}
+          firn-secret: ${{ secrets.FIRN_SECRET }}
 
       - name: Update Vaultwarden Source
         env:
