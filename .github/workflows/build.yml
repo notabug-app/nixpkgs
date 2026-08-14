@@ -47,8 +47,8 @@ jobs:
       - name: Setup Firn Cache
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
-          echo "substituters = https://cache.nixos.org ${{ secrets.FIRN_URL }}" >> ~/.config/nix/nix.conf
-          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= firn:${{ secrets.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
+          echo "substituters = https://cache.nixos.org" >> ~/.config/nix/nix.conf
+          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" >> ~/.config/nix/nix.conf
 
       - name: Build and Push Firn
         run: |
@@ -74,8 +74,8 @@ jobs:
       - name: Setup Firn Cache
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
-          echo "substituters = https://cache.nixos.org ${{ secrets.FIRN_URL }}" >> ~/.config/nix/nix.conf
-          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= firn:${{ secrets.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
+          echo "substituters = https://cache.nixos.org" >> ~/.config/nix/nix.conf
+          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" >> ~/.config/nix/nix.conf
 
       - name: Login to Firn Cache
         run: nix run .#packages.${{ matrix.system }}.firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
