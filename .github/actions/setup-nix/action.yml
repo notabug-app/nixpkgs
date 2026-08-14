@@ -4,6 +4,12 @@ inputs:
   ssh-private-key:
     description: "SSH Private Key"
     required: true
+  firn-url:
+    description: "Firn Cache URL"
+    required: false
+  firn-pkey:
+    description: "Firn Cache Public Key"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -17,6 +23,9 @@ runs:
       with:
         extra-conf: |
           accept-flake-config = true
+          ${{ inputs.firn-url != '' && format('extra-substituters = {0}', inputs.firn-url) || '' }}
+          ${{ inputs.firn-url != '' && format('extra-trusted-substituters = {0}', inputs.firn-url) || '' }}
+          ${{ inputs.firn-pkey != '' && format('extra-trusted-public-keys = {0}', inputs.firn-pkey) || '' }}
 
     - name: Setup Crane Cachix
       uses: cachix/cachix-action@v15

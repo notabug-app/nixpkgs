@@ -20,6 +20,8 @@ jobs:
         uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          firn-url: ${{ secrets.FIRN_URL }}
+          firn-pkey: ${{ secrets.FIRN_PKEY }}
 
       - name: Generate Package Matrix
         id: set-matrix
@@ -28,10 +30,12 @@ jobs:
   build-cache-client:
     strategy:
       matrix:
-        os: [ubuntu-24.04-arm]
+        os: [ubuntu-24.04-arm, ubuntu-24.04]
         include:
           - os: ubuntu-24.04-arm
             system: aarch64-linux
+          - os: ubuntu-24.04
+            system: x86_64-linux
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout Repository
@@ -41,12 +45,14 @@ jobs:
         uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          firn-url: ${{ secrets.FIRN_URL }}
+          firn-pkey: ${{ secrets.FIRN_PKEY }}
 
       - name: Build and Push Firn
         run: |
           nix build .#packages.${{ matrix.system }}.firn -L
           ./result/bin/firn auth login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
-          ./result/bin/firn push ./result
+          ./result/bin/firn push --include-drv --include-error-logs --include-ls ./result
 
 #  build:
 #    needs: [generate-matrix, build-cache-client]
@@ -62,6 +68,8 @@ jobs:
 #        uses: ./.github/actions/setup-nix
 #        with:
 #          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          firn-url: ${{ secrets.FIRN_URL }}
+#          firn-pkey: ${{ secrets.FIRN_PKEY }}
 #
 #      - name: Setup Firn Cache
 #        run: |
@@ -77,4 +85,4 @@ jobs:
 #        run: nix build .#packages.${{ matrix.system }}.${{ matrix.package }} -L
 #
 #      - name: Push to Firn Cache
-#        run: nix run .#packages.${{ matrix.system }}.firn -- push --include-error-logs --include-ls ./result
+#        run: nix run .#packages.${{ matrix.system }}.firn -- push --include-drv --include-error-logs --include-ls ./result
