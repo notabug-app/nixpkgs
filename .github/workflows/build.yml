@@ -27,11 +27,10 @@ jobs:
 
   build:
     needs: generate-matrix
-    runs-on: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      matrix:
-        package: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -41,11 +40,23 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: notabug
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Setup Firn Cache
+        run: |
+          mkdir -p ~/.config/nix ~/.config/firn
+          # create the netrc file before starting building the cache client so we can also pull
+          echo "machine ${{ vars.FIRN_HOST }} login firn password ${{ secrets.FIRN_TOKEN }}" > ~/.netrc
+          echo "netrc-file = ~/.netrc" >> ~/.config/nix/nix.conf
+          echo "substituters = https://cache.nixos.org ${{ vars.FIRN_URL }}" >> ~/.config/nix/nix.conf
+          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= firn:${{ vars.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
 
-      - name: Build Nix Package
-        run: nix build .#packages.aarch64-linux.${{ matrix.package }} -L
+      - name: Build Firn CLI (Cache Client)
+        run: nix build .#packages.${{ matrix.system }}.firn -L
+
+      - name: Login to Firn Cache
+        run: ./result/bin/firn login --server-url ${{ vars.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
+
+      - name: Build Target Package
+        run: nix build .#packages.${{ matrix.system }}.${{ matrix.package }} -L
+
+      - name: Push to Firn Cache
+        run: ./result/bin/firn push --include-error-logs --include-ls ./result

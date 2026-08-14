@@ -9,7 +9,7 @@ pkgs.writeShellApplication {
       echo "GITHUB_OUTPUT is not set!"
       exit 1
     fi
-    PKGS=$(nix eval --json .#packages.aarch64-linux --apply 'builtins.attrNames')
-    echo "matrix=$PKGS" >> "$GITHUB_OUTPUT"
+    PKGS=$(nix eval --json .#packages --apply 'packages: builtins.concatLists (map (system: let os = if system == "aarch64-linux" then "ubuntu-24.04-arm" else "ubuntu-24.04"; in map (package: { inherit system package os; }) (builtins.attrNames packages.''${system})) [ "aarch64-linux" "x86_64-linux" ])')
+    echo "matrix={\"include\":$PKGS}" >> "$GITHUB_OUTPUT"
   '';
 }

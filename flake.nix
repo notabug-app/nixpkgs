@@ -73,23 +73,10 @@
 
       packages = nixpkgs.lib.genAttrs systems (
         system:
-        let
-          pkgs = self.legacyPackages.${system};
-        in
-        {
-          cf = pkgs.cf;
-          void = pkgs.void;
-          firn = pkgs.firn;
-          vaultwarden = pkgs.vaultwarden;
-          vaultwarden-vault = pkgs.vaultwarden-vault;
-        }
-        // nixpkgs.lib.optionalAttrs (system == "aarch64-linux") {
-          kernel-rpi4 = pkgs.linuxPackages_rpi4_7_1.kernel;
-          cpupower-rpi4 = pkgs.linuxPackages_rpi4_7_1.cpupower;
-          kernel-rpi5 = pkgs.linuxPackages_rpi5_7_1.kernel;
-          cpupower-rpi5 = pkgs.linuxPackages_rpi5_7_1.cpupower;
-          libraspberrypi = nixos-raspberrypi.packages.${system}.libraspberrypi;
-          raspberrypi-utils = nixos-raspberrypi.packages.${system}.raspberrypi-utils;
+        import ./pkgs.nix {
+          final = self.legacyPackages.${system};
+          prev = self.legacyPackages.${system};
+          inherit inputs;
         }
       );
 
