@@ -41,13 +41,10 @@ jobs:
         uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Setup Firn Cache
-        run: |
-          mkdir -p ~/.config/nix ~/.config/firn
-          echo "substituters = https://cache.nixos.org" >> ~/.config/nix/nix.conf
-          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" >> ~/.config/nix/nix.conf
-          echo "require-sigs = false" >> ~/.config/nix/nix.conf
+          extra-conf: |
+            substituters = https://cache.nixos.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+            require-sigs = false
 
       - name: Build and Push Firn
         run: |

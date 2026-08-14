@@ -4,6 +4,10 @@ inputs:
   ssh-private-key:
     description: "SSH Private Key"
     required: true
+  extra-conf:
+    description: "Extra Nix configuration lines"
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -18,6 +22,7 @@ runs:
         extra-conf: |
           netrc-file = /etc/nix/netrc
           accept-flake-config = true
+          ${{ inputs.extra-conf }}
 
     - name: Setup Crane Cachix
       uses: cachix/cachix-action@v15
