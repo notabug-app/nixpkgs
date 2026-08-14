@@ -47,8 +47,6 @@ jobs:
       - name: Setup Firn Cache
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
-          echo "machine ${{ secrets.FIRN_HOST }} password ${{ secrets.FIRN_TOKEN }}" > $HOME/.netrc
-          echo "netrc-file = $HOME/.netrc" >> ~/.config/nix/nix.conf
           echo "substituters = https://cache.nixos.org ${{ secrets.FIRN_URL }}" >> ~/.config/nix/nix.conf
           echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= firn:${{ secrets.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
 
@@ -76,8 +74,6 @@ jobs:
       - name: Setup Firn Cache
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
-          echo "machine ${{ secrets.FIRN_HOST }} password ${{ secrets.FIRN_TOKEN }}" > $HOME/.netrc
-          echo "netrc-file = $HOME/.netrc" >> ~/.config/nix/nix.conf
           echo "substituters = https://cache.nixos.org ${{ secrets.FIRN_URL }}" >> ~/.config/nix/nix.conf
           echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= firn:${{ secrets.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
 
