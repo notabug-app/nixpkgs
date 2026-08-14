@@ -9,6 +9,7 @@ on:
 
 jobs:
   generate-matrix:
+    needs: [build-aarch64-firn, build-x86_64-firn]
     runs-on: ubuntu-24.04-arm
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -84,7 +85,7 @@ jobs:
         run: nix run .#firn -- push --include-drv --include-error-logs --include-ls ./result
 
   build:
-    needs: [generate-matrix, build-aarch64-firn]
+    needs: generate-matrix
     runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
