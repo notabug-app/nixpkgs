@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
           # create the netrc file before starting building the cache client so we can also pull
-          echo "machine ${{ vars.FIRN_HOST }} login firn password ${{ secrets.FIRN_TOKEN }}" > ~/.netrc
+          echo "machine ${{ vars.FIRN_HOST }} password ${{ secrets.FIRN_TOKEN }}" > ~/.netrc
           echo "netrc-file = ~/.netrc" >> ~/.config/nix/nix.conf
           echo "substituters = https://cache.nixos.org ${{ vars.FIRN_URL }}" >> ~/.config/nix/nix.conf
           echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= firn:${{ vars.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
