@@ -37,13 +37,11 @@ jobs:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: Authenticate to Firn Cache (nix daemon)
-        run: |
-          HOST=$(echo "${{ secrets.FIRN_URL }}" | awk -F/ '{print $3}')
-          echo "machine $HOST password ${{ secrets.FIRN_SECRET }}" | sudo tee -a /etc/nix/netrc > /dev/null
-
-      - name: Authenticate to Firn Cache (push client)
-        run: nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }}
+      - name: Setup Firn Cache
+        env:
+          FIRN_URL: ${{ secrets.FIRN_URL }}
+          FIRN_SECRET: ${{ secrets.FIRN_SECRET }}
+        run: nix develop -c setup-firn
       - name: Generate Package Matrix
         id: set-matrix
         run: nix develop -c generate-matrix
@@ -75,20 +73,15 @@ jobs:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: Authenticate to Firn Cache (nix daemon)
-        run: |
-          HOST=$(echo "${{ secrets.FIRN_URL }}" | awk -F/ '{print $3}')
-          echo "machine $HOST password ${{ secrets.FIRN_SECRET }}" | sudo tee -a /etc/nix/netrc > /dev/null
-
-      - name: Authenticate to Firn Cache (push client)
-        run: nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }}
-
-      - name: Build Firn (aarch64)
-        run: nix build .#packages.aarch64-linux.firn -L
+      - name: Setup Firn Cache
+        env:
+          FIRN_URL: ${{ secrets.FIRN_URL }}
+          FIRN_SECRET: ${{ secrets.FIRN_SECRET }}
+        run: nix develop -c setup-firn
 
       - name: Push to Firn Cache
         if: always()
-        run: nix run .#firn -- push --include-drv --include-error-logs ./result
+        run: nix run .#firn -- push --include-drv --include-error-logs --include-ls ./result
 
   build:
     needs: [generate-matrix, build-aarch64-firn]
@@ -122,13 +115,11 @@ jobs:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: Authenticate to Firn Cache (nix daemon)
-        run: |
-          HOST=$(echo "${{ secrets.FIRN_URL }}" | awk -F/ '{print $3}')
-          echo "machine $HOST password ${{ secrets.FIRN_SECRET }}" | sudo tee -a /etc/nix/netrc > /dev/null
-
-      - name: Authenticate to Firn Cache (push client)
-        run: nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }}
+      - name: Setup Firn Cache
+        env:
+          FIRN_URL: ${{ secrets.FIRN_URL }}
+          FIRN_SECRET: ${{ secrets.FIRN_SECRET }}
+        run: nix develop -c setup-firn
 
 
 
@@ -137,7 +128,7 @@ jobs:
 
       - name: Push to Firn Cache
         if: always()
-        run: nix run .#firn -- push --include-drv --include-error-logs ./result
+        run: nix run .#firn -- push --include-drv --include-error-logs --include-ls ./result
 
   build-x86_64-firn:
     runs-on: ubuntu-latest
@@ -166,17 +157,12 @@ jobs:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: Authenticate to Firn Cache (nix daemon)
-        run: |
-          HOST=$(echo "${{ secrets.FIRN_URL }}" | awk -F/ '{print $3}')
-          echo "machine $HOST password ${{ secrets.FIRN_SECRET }}" | sudo tee -a /etc/nix/netrc > /dev/null
-
-      - name: Authenticate to Firn Cache (push client)
-        run: nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }}
-
-      - name: Build Firn (x86_64)
-        run: nix build .#packages.x86_64-linux.firn -L
+      - name: Setup Firn Cache
+        env:
+          FIRN_URL: ${{ secrets.FIRN_URL }}
+          FIRN_SECRET: ${{ secrets.FIRN_SECRET }}
+        run: nix develop -c setup-firn
 
       - name: Push to Firn Cache
         if: always()
-        run: nix run .#firn -- push --include-drv --include-error-logs ./result
+        run: nix run .#firn -- push --include-drv --include-error-logs --include-ls ./result

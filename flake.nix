@@ -62,6 +62,7 @@
             nativeBuildInputs = [
               (pkgs.callPackage ./devshells/update-vaultwarden.nix { })
               (pkgs.callPackage ./devshells/update-kernel.nix { })
+              (pkgs.callPackage ./devshells/setup-firn.nix { })
 
               (pkgs.callPackage ./devshells/commit-update.nix { })
               (pkgs.callPackage ./devshells/generate-matrix.nix { })
