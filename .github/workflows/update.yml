@@ -31,16 +31,16 @@ jobs:
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-public-keys = firn:${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
-      - name: Authenticate to Firn Cache
-        run: |
-          nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }} --netrc /tmp/netrc
-          sudo cp /tmp/netrc /etc/nix/netrc
-
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
         with:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Authenticate to Firn Cache
+        run: |
+          nix run .#firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_SECRET }} --netrc /tmp/netrc
+          sudo cp /tmp/netrc /etc/nix/netrc
 
       - name: Update Vaultwarden Source
         env:
