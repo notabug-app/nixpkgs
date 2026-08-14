@@ -47,13 +47,14 @@ jobs:
       - name: Setup Firn Cache
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
-          echo "substituters = https://cache.nixos.org" >> ~/.config/nix/nix.conf
-          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" >> ~/.config/nix/nix.conf
+          echo "substituters = https://cache.nixos.org ${{ secrets.FIRN_URL }}" >> ~/.config/nix/nix.conf
+          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= firn:${{ secrets.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
+          echo "require-sigs = false" >> ~/.config/nix/nix.conf
 
       - name: Build and Push Firn
         run: |
           nix build .#packages.${{ matrix.system }}.firn -L
-          ./result/bin/firn login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
+          ./result/bin/firn auth login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
           ./result/bin/firn push ./result
 
   build:
@@ -74,11 +75,12 @@ jobs:
       - name: Setup Firn Cache
         run: |
           mkdir -p ~/.config/nix ~/.config/firn
-          echo "substituters = https://cache.nixos.org" >> ~/.config/nix/nix.conf
-          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" >> ~/.config/nix/nix.conf
+          echo "substituters = https://cache.nixos.org ${{ secrets.FIRN_URL }}" >> ~/.config/nix/nix.conf
+          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= firn:${{ secrets.FIRN_PUBLIC_KEY }}" >> ~/.config/nix/nix.conf
+          echo "require-sigs = false" >> ~/.config/nix/nix.conf
 
       - name: Login to Firn Cache
-        run: nix run .#packages.${{ matrix.system }}.firn -- login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
+        run: nix run .#packages.${{ matrix.system }}.firn -- auth login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
 
       - name: Build Target Package
         run: nix build .#packages.${{ matrix.system }}.${{ matrix.package }} -L
