@@ -29,7 +29,7 @@ jobs:
             accept-flake-config = true
             extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = firn:${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -64,7 +64,7 @@ jobs:
             accept-flake-config = true
             extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = firn:${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -108,7 +108,7 @@ jobs:
             accept-flake-config = true
             extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = firn:${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -149,7 +149,7 @@ jobs:
             accept-flake-config = true
             extra-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
             extra-trusted-substituters = ${{ secrets.FIRN_URL }} https://crane.cachix.org
-            extra-trusted-public-keys = firn:${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
+            extra-trusted-public-keys = ${{ secrets.FIRN_PKEY }} crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk=
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
