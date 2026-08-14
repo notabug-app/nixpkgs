@@ -43,7 +43,9 @@
       customOverlay =
         final: prev:
         (import ./pkgs.nix { inherit final prev inputs; })
-        // (import ./linux.nix { inherit final prev inputs; });
+        // (if prev.stdenv.hostPlatform.system == "aarch64-linux"
+            then (import ./linux.nix { inherit final prev inputs; })
+            else { });
       systems = [
         "aarch64-linux"
         "x86_64-linux"
