@@ -26,6 +26,9 @@ runs:
       with:
         extra-conf: |
           accept-flake-config = true
+          ${{ inputs.firn-url != '' && format('extra-substituters = {0}', inputs.firn-url) || '' }}
+          ${{ inputs.firn-url != '' && format('extra-trusted-substituters = {0}', inputs.firn-url) || '' }}
+          ${{ inputs.firn-pkey != '' && format('extra-trusted-public-keys = {0}', inputs.firn-pkey) || '' }}
 
     - name: Setup Crane Cachix
       uses: cachix/cachix-action@v15
