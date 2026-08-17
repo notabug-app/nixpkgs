@@ -40,32 +40,28 @@
       ...
     }@inputs:
     let
+      systems = [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
       customOverlay =
         final: prev:
         (import ./pkgs.nix { inherit final prev inputs; })
         // (if prev.stdenv.hostPlatform.system == "aarch64-linux"
             then (import ./linux.nix { inherit final prev inputs; })
             else { });
-      systems = [
-        "aarch64-linux"
-        "x86_64-linux"
-      ];
     in
     {
       overlays.default = customOverlay;
 
-      devShells = nixpkgs.lib.genAttrs systems (
-        system:
-        let
-          pkgs = self.legacyPackages.${system};
-        in
-        {
+      devShells = forAllSystems (system:
+        let pkgs = self.legacyPackages.${system}; in {
           default = pkgs.mkShell {
             nativeBuildInputs = [
               (pkgs.callPackage ./devshells/update-vaultwarden.nix { })
               (pkgs.callPackage ./devshells/update-kernel.nix { })
               (pkgs.callPackage ./devshells/setup-firn.nix { })
-
               (pkgs.callPackage ./devshells/commit-update.nix { })
               (pkgs.callPackage ./devshells/generate-matrix.nix { })
             ];
@@ -73,17 +69,15 @@
         }
       );
 
-      packages = nixpkgs.lib.genAttrs systems (
-        system:
-        import ./pkgs.nix {
-          final = self.legacyPackages.${system};
-          prev = self.legacyPackages.${system};
-          inherit inputs;
+      packages = forAllSystems (system:
+        let pkgs = self.legacyPackages.${system}; in {
+          inherit (pkgs) cf void firn vaultwarden vaultwarden-vault;
+        } // pkgs.lib.optionalAttrs (system == "aarch64-linux") {
+          inherit (pkgs) kernel-rpi4 cpupower-rpi4 kernel-rpi5 cpupower-rpi5 libraspberrypi raspberrypi-utils;
         }
       );
 
-      legacyPackages = nixpkgs.lib.genAttrs systems (
-        system:
+      legacyPackages = forAllSystems (system:
         import nixpkgs {
           inherit system;
           overlays = [ customOverlay ];
