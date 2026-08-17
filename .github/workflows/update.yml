@@ -22,6 +22,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           firn-url: ${{ secrets.FIRN_URL }}
           firn-pkey: ${{ secrets.FIRN_PKEY }}
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Update Vaultwarden Source
         env:

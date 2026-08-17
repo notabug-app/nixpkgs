@@ -10,6 +10,9 @@ inputs:
   firn-pkey:
     description: "Firn Cache Public Key"
     required: false
+  cachix-auth-token:
+    description: "Cachix Auth Token"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -31,3 +34,10 @@ runs:
       uses: cachix/cachix-action@v15
       with:
         name: crane
+
+    - name: Setup Notabug Cachix
+      if: inputs.cachix-auth-token != ''
+      uses: cachix/cachix-action@v15
+      with:
+        name: notabug
+        authToken: ${{ inputs.cachix-auth-token }}

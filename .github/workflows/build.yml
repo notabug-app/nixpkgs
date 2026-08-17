@@ -22,6 +22,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           firn-url: ${{ secrets.FIRN_URL }}
           firn-pkey: ${{ secrets.FIRN_PKEY }}
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Generate Package Matrix
         id: set-matrix
@@ -47,6 +48,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           firn-url: ${{ secrets.FIRN_URL }}
           firn-pkey: ${{ secrets.FIRN_PKEY }}
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build and Push Firn
         run: |
@@ -70,6 +72,7 @@ jobs:
 #          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 #          firn-url: ${{ secrets.FIRN_URL }}
 #          firn-pkey: ${{ secrets.FIRN_PKEY }}
+#          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 #
 #      - name: Setup Firn Cache
 #        run: |
