@@ -29,5 +29,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           nix develop -c update-vaultwarden
+          nix develop -c update-helium
           nix flake update
           nix develop -c commit-update

@@ -37,6 +37,7 @@ in
   noctalia = inputs.noctalia.packages.${sys}.default;
   noctalia-greeter = inputs.noctalia-greeter.packages.${sys}.default;
   nvidia-legacy-580 = prev.linuxPackages.nvidiaPackages.legacy_580;
+  helium = inputs.helium.packages.${sys}.default;
 }
 // prev.lib.optionalAttrs (sys == "aarch64-linux") {
   kernel-rpi4 = final.linuxPackages_rpi4_7_1.kernel;
