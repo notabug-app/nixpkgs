@@ -24,13 +24,10 @@ jobs:
           firn-pkey: ${{ secrets.FIRN_PKEY }}
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Update Vaultwarden Source
+      - name: Update and Commit
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: nix develop -c update-vaultwarden
-
-      - name: Update Flake Inputs
-        run: nix flake update
-
-      - name: Commit and Push Changes
-        run: nix develop -c commit-update
+        run: |
+          nix develop -c update-vaultwarden
+          nix flake update
+          nix develop -c commit-update
