@@ -33,6 +33,11 @@ in
     '';
   };
 }
+// prev.lib.optionalAttrs (sys == "x86_64-linux") {
+  noctalia = inputs.noctalia.packages.${sys}.default;
+  noctalia-greeter = inputs.noctalia-greeter.packages.${sys}.default;
+  nvidia-legacy-580 = prev.linuxPackages.nvidiaPackages.legacy_580;
+}
 // prev.lib.optionalAttrs (sys == "aarch64-linux") {
   kernel-rpi4 = final.linuxPackages_rpi4_7_1.kernel;
   cpupower-rpi4 = final.linuxPackages_rpi4_7_1.cpupower;

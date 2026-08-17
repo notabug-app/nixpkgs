@@ -8,26 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate-matrix:
-    runs-on: ubuntu-24.04-arm
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Nix Environment
-        uses: ./.github/actions/setup-nix
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          firn-url: ${{ secrets.FIRN_URL }}
-          firn-pkey: ${{ secrets.FIRN_PKEY }}
-          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: Generate Package Matrix
-        id: set-matrix
-        run: nix develop -c generate-matrix
-
   build-cache-client:
     strategy:
       matrix:
@@ -58,12 +38,74 @@ jobs:
           firn-url: ${{ secrets.FIRN_URL }}
           firn-token: ${{ secrets.FIRN_TOKEN }}
 
+      - name: Push Firn to Cachix
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        run: nix run nixpkgs#cachix -- push notabug $(nix-store -qR ./result)
+
   build:
-    needs: [generate-matrix, build-cache-client]
+    needs: [build-cache-client]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+      matrix:
+        include:
+          # Kernels (push to cachix)
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: kernel-rpi4
+            push_cachix: true
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: kernel-rpi5
+            push_cachix: true
+          # Other Aarch64 Packages
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: cpupower-rpi4
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: cpupower-rpi5
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: libraspberrypi
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: raspberrypi-utils
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: cf
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: vaultwarden
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: vaultwarden-vault
+          - os: ubuntu-24.04-arm
+            system: aarch64-linux
+            package: void
+          # x86_64 Packages
+          - os: ubuntu-24.04
+            system: x86_64-linux
+            package: noctalia
+          - os: ubuntu-24.04
+            system: x86_64-linux
+            package: noctalia-greeter
+          - os: ubuntu-24.04
+            system: x86_64-linux
+            package: nvidia-legacy-580
+          - os: ubuntu-24.04
+            system: x86_64-linux
+            package: cf
+          - os: ubuntu-24.04
+            system: x86_64-linux
+            package: vaultwarden
+          - os: ubuntu-24.04
+            system: x86_64-linux
+            package: vaultwarden-vault
+          - os: ubuntu-24.04
+            system: x86_64-linux
+            package: void
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -83,3 +125,9 @@ jobs:
           package: ${{ matrix.package }}
           firn-url: ${{ secrets.FIRN_URL }}
           firn-token: ${{ secrets.FIRN_TOKEN }}
+
+      - name: Push to Cachix
+        if: ${{ matrix.push_cachix == true }}
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        run: nix run nixpkgs#cachix -- push notabug $(nix-store -qR ./result)

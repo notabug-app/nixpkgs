@@ -20,8 +20,12 @@
       url = "git+ssh://git@github.com/notabug-app/firn.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+    };
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+    };
     vaultwarden-src = {
       url = "github:dani-garcia/vaultwarden/1.37.1";
       flake = false;
@@ -67,7 +71,6 @@
               (pkgs.callPackage ./devshells/update-kernel.nix { })
               (pkgs.callPackage ./devshells/setup-firn.nix { })
               (pkgs.callPackage ./devshells/commit-update.nix { })
-              (pkgs.callPackage ./devshells/generate-matrix.nix { })
             ];
           };
         }
@@ -76,6 +79,8 @@
       packages = forAllSystems (system:
         let pkgs = self.legacyPackages.${system}; in {
           inherit (pkgs) cf void firn vaultwarden vaultwarden-vault;
+        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          inherit (pkgs) noctalia noctalia-greeter nvidia-legacy-580;
         } // pkgs.lib.optionalAttrs (system == "aarch64-linux") {
           inherit (pkgs) kernel-rpi4 cpupower-rpi4 kernel-rpi5 cpupower-rpi5 libraspberrypi raspberrypi-utils;
         }
@@ -85,15 +90,20 @@
         import nixpkgs {
           inherit system;
           overlays = [ customOverlay ];
+          config.allowUnfree = true;
         }
       );
 
       lib = nixos-raspberrypi.lib;
 
+      homeModules.noctalia = inputs.noctalia.homeModules.default;
+
       nixosModules = nixos-raspberrypi.nixosModules // {
         cf = inputs.cf.nixosModules.default;
         void = inputs.void.nixosModules.default;
         firn = inputs.firn.nixosModules.default;
+        noctalia = inputs.noctalia.nixosModules.default;
+        noctalia-greeter = inputs.noctalia-greeter.nixosModules.default;
 
         default =
           {
