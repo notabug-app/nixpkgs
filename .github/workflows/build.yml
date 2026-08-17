@@ -56,36 +56,29 @@ jobs:
           ./result/bin/firn auth login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
           ./result/bin/firn push --include-drv --include-error-logs --include-ls ./result
 
-#  build:
-#    needs: [generate-matrix, build-cache-client]
-#    runs-on: ${{ matrix.os }}
-#    strategy:
-#      fail-fast: false
-#      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
-#    steps:
-#      - name: Checkout Repository
-#        uses: actions/checkout@v4
-#
-#      - name: Setup Nix Environment
-#        uses: ./.github/actions/setup-nix
-#        with:
-#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          firn-url: ${{ secrets.FIRN_URL }}
-#          firn-pkey: ${{ secrets.FIRN_PKEY }}
-#          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
-#
-#      - name: Setup Firn Cache
-#        run: |
-#          mkdir -p ~/.config/nix ~/.config/firn
-#          echo "substituters = https://cache.nixos.org" >> ~/.config/nix/nix.conf
-#          echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" >> ~/.config/nix/nix.conf
-#          echo "require-sigs = false" >> ~/.config/nix/nix.conf
-#
-#      - name: Login to Firn Cache
-#        run: nix run .#packages.${{ matrix.system }}.firn -- auth login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
-#
-#      - name: Build Target Package
-#        run: nix build .#packages.${{ matrix.system }}.${{ matrix.package }} -L
-#
-#      - name: Push to Firn Cache
-#        run: nix run .#packages.${{ matrix.system }}.firn -- push --include-drv --include-error-logs --include-ls ./result
+  build:
+    needs: [generate-matrix, build-cache-client]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Nix Environment
+        uses: ./.github/actions/setup-nix
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          firn-url: ${{ secrets.FIRN_URL }}
+          firn-pkey: ${{ secrets.FIRN_PKEY }}
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Login to Firn Cache
+        run: nix run .#packages.${{ matrix.system }}.firn -- auth login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
+
+      - name: Build Target Package
+        run: nix build .#packages.${{ matrix.system }}.${{ matrix.package }} -L
+
+      - name: Push to Firn Cache
+        run: nix run .#packages.${{ matrix.system }}.firn -- push --include-drv --include-error-logs --include-ls ./result
