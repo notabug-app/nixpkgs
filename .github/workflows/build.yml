@@ -41,7 +41,7 @@ jobs:
       - name: Push Firn to Cachix
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
-        run: nix run nixpkgs#cachix -- push notabug $(nix-store -qR ./result)
+        run: nix run nixpkgs#cachix -- push notabug $(nix-store -qR ./result*)
 
   build:
     needs: [build-cache-client]
@@ -133,4 +133,4 @@ jobs:
         if: ${{ matrix.push_cachix == true }}
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
-        run: nix run nixpkgs#cachix -- push notabug $(nix-store -qR ./result)
+        run: nix run nixpkgs#cachix -- push notabug $(nix-store -qR ./result*)

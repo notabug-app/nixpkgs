@@ -29,5 +29,9 @@ runs:
         fi
         
         $FIRN_BIN auth login --server-url ${{ inputs.firn-url }} --token ${{ inputs.firn-token }}
-        $FIRN_BIN push --include-drv --include-error-logs --include-ls ./result
+        for res in ./result*; do
+          if [ -e "$res" ]; then
+            $FIRN_BIN push --include-drv --include-error-logs --include-ls "$res"
+          fi
+        done
       shell: bash
