@@ -53,7 +53,11 @@
             else { });
     in
     {
-      overlays.default = customOverlay;
+      overlays = {
+        default = customOverlay;
+        x86_64-linux = final: prev: import ./pkgs.nix { inherit final prev inputs; };
+        aarch64-linux = final: prev: (import ./pkgs.nix { inherit final prev inputs; }) // (import ./linux.nix { inherit final prev inputs; });
+      };
 
       devShells = forAllSystems (system:
         let pkgs = self.legacyPackages.${system}; in {
@@ -126,6 +130,17 @@
                 message = "This custom flake only keeps Pi 4 and Pi 5 enabled.";
               }
             ];
+          };
+
+        x86_64-linux = 
+          { ... }: 
+          {
+            imports = [
+              inputs.cf.nixosModules.default
+              inputs.void.nixosModules.default
+              inputs.firn.nixosModules.default
+            ];
+            nixpkgs.overlays = [ customOverlay ];
           };
       };
     };
