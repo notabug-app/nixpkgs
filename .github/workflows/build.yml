@@ -51,10 +51,12 @@ jobs:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build and Push Firn
-        run: |
-          nix build .#packages.${{ matrix.system }}.firn -L
-          ./result/bin/firn auth login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
-          ./result/bin/firn push --include-drv --include-error-logs --include-ls ./result
+        uses: ./.github/actions/build-and-push
+        with:
+          system: ${{ matrix.system }}
+          package: firn
+          firn-url: ${{ secrets.FIRN_URL }}
+          firn-token: ${{ secrets.FIRN_TOKEN }}
 
   build:
     needs: [generate-matrix, build-cache-client]
@@ -74,11 +76,10 @@ jobs:
           firn-pkey: ${{ secrets.FIRN_PKEY }}
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Login to Firn Cache
-        run: nix run .#packages.${{ matrix.system }}.firn -- auth login --server-url ${{ secrets.FIRN_URL }} --token ${{ secrets.FIRN_TOKEN }}
-
       - name: Build Target Package
-        run: nix build .#packages.${{ matrix.system }}.${{ matrix.package }} -L
-
-      - name: Push to Firn Cache
-        run: nix run .#packages.${{ matrix.system }}.firn -- push --include-drv --include-error-logs --include-ls ./result
+        uses: ./.github/actions/build-and-push
+        with:
+          system: ${{ matrix.system }}
+          package: ${{ matrix.package }}
+          firn-url: ${{ secrets.FIRN_URL }}
+          firn-token: ${{ secrets.FIRN_TOKEN }}
