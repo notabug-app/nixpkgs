@@ -155,10 +155,10 @@
 
             boot.kernelPackages = lib.mkMerge [
               (lib.mkIf (config.boot.loader.raspberry-pi.variant == "4") (
-                lib.mkForce pkgs.linuxPackages_rpi4_7_1
+                lib.mkForce pkgs.linuxPackages_rpi4_7_2
               ))
               (lib.mkIf (config.boot.loader.raspberry-pi.variant == "5") (
-                lib.mkForce pkgs.linuxPackages_rpi5_7_1
+                lib.mkForce pkgs.linuxPackages_rpi5_7_2
               ))
             ];
 
