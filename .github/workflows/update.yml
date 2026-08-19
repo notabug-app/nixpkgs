@@ -1,20 +1,13 @@
-name: Build Nix Packages
+name: Update Flake
+
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  schedule:
+    - cron: "0 0 */3 * *"
   workflow_dispatch:
+
 jobs:
-  build:
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            arch: x86_64-linux
-          - os: ubuntu-24.04-arm
-            arch: aarch64-linux
-    runs-on: ${{ matrix.os }}
+  update:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,16 +18,24 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Install Nix
         uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
         with:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          pushFilter: '(-source$|\.tar\.gz$|\.tar\.xz$|\.patch$|\.drv$)'
-      - name: Build packages
-        run: nix run github:Mic92/nix-fast-build -- --flake .#packages.${{ matrix.arch }}
+
+      - name: Update and Commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          nix develop -c update-vaultwarden
+          nix develop -c update-helium
+          nix flake update
+          nix develop -c commit-update
