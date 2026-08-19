@@ -22,9 +22,9 @@ pkgs.writeShellApplication {
     sed -i -E "s|github:dani-garcia/vaultwarden/[^\"]*|github:dani-garcia/vaultwarden/''${VW_TAG}|" flake.nix
     sed -i -E "s|download/v[0-9.]+/bw_web_v[0-9.]+\.tar\.gz|download/''${WEB_TAG}/bw_web_''${WEB_TAG}.tar.gz|" flake.nix
 
-    echo "Updating pkgs.nix versions..."
-    sed -i -E '/vaultwarden =/,/version = /s/version = "[^"]*"/version = "'"$VW_VERSION"'"/' pkgs.nix
-    sed -i -E '/vaultwarden-vault =/,/version = /s/version = "[^"]*"/version = "'"$WEB_TAG"'"/' pkgs.nix
+    echo "Updating pkgs/arm.nix versions..."
+    sed -i -E '/vaultwarden =/,/version = /s/version = "[^"]*"/version = "'"$VW_VERSION"'"/' pkgs/arm.nix
+    sed -i -E '/vaultwarden-vault =/,/version = /s/version = "[^"]*"/version = "'"$WEB_TAG"'"/' pkgs/arm.nix
 
 
     echo "Done!"

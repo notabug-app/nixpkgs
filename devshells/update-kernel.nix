@@ -76,10 +76,10 @@ pkgs.writeShellApplication {
     # shellcheck disable=SC2016
     sed -i -E 's/name = "linuxPackages_rpi\$\{model\}_[0-9]+_[0-9]+";/name = "linuxPackages_rpi\''${model}_'"''${NEW_SUFFIX}"'";/' linux.nix
 
-    sed -i -E "s/linuxPackages_rpi([45])_[0-9]+_[0-9]+/linuxPackages_rpi\1_''${NEW_SUFFIX}/g" flake.nix pkgs.nix
+    sed -i -E "s/linuxPackages_rpi([45])_[0-9]+_[0-9]+/linuxPackages_rpi\1_''${NEW_SUFFIX}/g" flake.nix pkgs/arm.nix
 
     echo "Committing changes..."
-    git add linux.nix flake.nix pkgs.nix
+    git add linux.nix flake.nix pkgs/arm.nix
     if ! git diff --cached --quiet; then
         echo ""
         echo "Changes:"

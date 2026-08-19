@@ -8,7 +8,7 @@ pkgs.writeShellApplication {
     git config user.name "github-actions[bot]"
     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-    git add flake.lock flake.nix pkgs.nix
+    git add flake.lock flake.nix pkgs/
     git commit -m "chore: update flake and vaultwarden" || echo "No changes to commit"
     git push
   '';

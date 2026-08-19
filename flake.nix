@@ -7,6 +7,10 @@
       url = "github:nvmd/nixos-raspberrypi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     cf = {
       url = "git+ssh://git@github.com/notabug-app/cf.git";
@@ -50,7 +54,7 @@
       forAllSystems = nixpkgs.lib.genAttrs systems;
       customOverlay =
         final: prev:
-        (import ./pkgs.nix { inherit final prev inputs; })
+        (import ./pkgs { inherit final prev inputs; })
         // (
           if prev.stdenv.hostPlatform.system == "aarch64-linux" then
             (import ./linux.nix { inherit final prev inputs; })
@@ -61,10 +65,10 @@
     {
       overlays = {
         default = customOverlay;
-        x86_64-linux = final: prev: import ./pkgs.nix { inherit final prev inputs; };
+        x86_64-linux = final: prev: import ./pkgs { inherit final prev inputs; };
         aarch64-linux =
           final: prev:
-          (import ./pkgs.nix { inherit final prev inputs; })
+          (import ./pkgs { inherit final prev inputs; })
           // (import ./linux.nix { inherit final prev inputs; });
       };
 
@@ -91,12 +95,6 @@
           pkgs = self.legacyPackages.${system};
         in
         {
-          inherit (pkgs)
-            cf
-            void
-            vaultwarden
-            vaultwarden-vault
-            ;
         }
         // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           inherit (pkgs)
@@ -114,6 +112,10 @@
             cpupower-rpi5
             libraspberrypi
             raspberrypi-utils
+            cf
+            void
+            vaultwarden
+            vaultwarden-vault
             ;
         }
       );
@@ -131,13 +133,8 @@
 
       homeModules.noctalia = inputs.noctalia.homeModules.default;
 
-      nixosModules = nixos-raspberrypi.nixosModules // {
-        cf = inputs.cf.nixosModules.default;
-        void = inputs.void.nixosModules.default;
-        noctalia = inputs.noctalia.nixosModules.default;
-        noctalia-greeter = inputs.noctalia-greeter.nixosModules.default;
-
-        default =
+      nixosModules = {
+        aarch64-linux =
           {
             pkgs,
             lib,
@@ -185,5 +182,14 @@
             nixpkgs.overlays = [ customOverlay ];
           };
       };
+
+      formatter = forAllSystems (
+        system:
+        (inputs.treefmt-nix.lib.evalModule self.legacyPackages.${system} {
+          projectRootFile = "flake.nix";
+          programs.nixfmt.enable = true;
+          programs.yamlfmt.enable = true;
+        }).config.build.wrapper
+      );
     };
 }

@@ -1,0 +1,33 @@
+name: Build Nix Packages
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: x86_64-linux
+          - os: ubuntu-24.04-arm
+            arch: aarch64-linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: notabug
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          pushFilter: '(-source$|\.tar\.gz$|\.tar\.xz$|\.patch$|\.drv$)'
+      - name: Build packages
+        run: nix run github:Mic92/nix-fast-build -- --flake .#packages.${{ matrix.arch }}
