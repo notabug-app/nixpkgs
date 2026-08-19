@@ -16,10 +16,6 @@
       url = "git+ssh://git@github.com/notabug-app/void.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    firn = {
-      url = "git+ssh://git@github.com/notabug-app/firn.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     helium = {
       url = "git+ssh://git@github.com/s-Sizz/helium.git";
     };
@@ -55,42 +51,75 @@
       customOverlay =
         final: prev:
         (import ./pkgs.nix { inherit final prev inputs; })
-        // (if prev.stdenv.hostPlatform.system == "aarch64-linux"
-            then (import ./linux.nix { inherit final prev inputs; })
-            else { });
+        // (
+          if prev.stdenv.hostPlatform.system == "aarch64-linux" then
+            (import ./linux.nix { inherit final prev inputs; })
+          else
+            { }
+        );
     in
     {
       overlays = {
         default = customOverlay;
         x86_64-linux = final: prev: import ./pkgs.nix { inherit final prev inputs; };
-        aarch64-linux = final: prev: (import ./pkgs.nix { inherit final prev inputs; }) // (import ./linux.nix { inherit final prev inputs; });
+        aarch64-linux =
+          final: prev:
+          (import ./pkgs.nix { inherit final prev inputs; })
+          // (import ./linux.nix { inherit final prev inputs; });
       };
 
-      devShells = forAllSystems (system:
-        let pkgs = self.legacyPackages.${system}; in {
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = self.legacyPackages.${system};
+        in
+        {
           default = pkgs.mkShell {
             nativeBuildInputs = [
               (pkgs.callPackage ./devshells/update-vaultwarden.nix { })
               (pkgs.callPackage ./devshells/update-helium.nix { })
               (pkgs.callPackage ./devshells/update-kernel.nix { })
-              (pkgs.callPackage ./devshells/setup-firn.nix { })
               (pkgs.callPackage ./devshells/commit-update.nix { })
             ];
           };
         }
       );
 
-      packages = forAllSystems (system:
-        let pkgs = self.legacyPackages.${system}; in {
-          inherit (pkgs) cf void firn vaultwarden vaultwarden-vault;
-        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
-          inherit (pkgs) noctalia noctalia-greeter nvidia-legacy-580 helium;
-        } // pkgs.lib.optionalAttrs (system == "aarch64-linux") {
-          inherit (pkgs) kernel-rpi4 cpupower-rpi4 kernel-rpi5 cpupower-rpi5 libraspberrypi raspberrypi-utils;
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = self.legacyPackages.${system};
+        in
+        {
+          inherit (pkgs)
+            cf
+            void
+            vaultwarden
+            vaultwarden-vault
+            ;
+        }
+        // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          inherit (pkgs)
+            noctalia
+            noctalia-greeter
+            nvidia-legacy-580
+            helium
+            ;
+        }
+        // pkgs.lib.optionalAttrs (system == "aarch64-linux") {
+          inherit (pkgs)
+            kernel-rpi4
+            cpupower-rpi4
+            kernel-rpi5
+            cpupower-rpi5
+            libraspberrypi
+            raspberrypi-utils
+            ;
         }
       );
 
-      legacyPackages = forAllSystems (system:
+      legacyPackages = forAllSystems (
+        system:
         import nixpkgs {
           inherit system;
           overlays = [ customOverlay ];
@@ -105,7 +134,6 @@
       nixosModules = nixos-raspberrypi.nixosModules // {
         cf = inputs.cf.nixosModules.default;
         void = inputs.void.nixosModules.default;
-        firn = inputs.firn.nixosModules.default;
         noctalia = inputs.noctalia.nixosModules.default;
         noctalia-greeter = inputs.noctalia-greeter.nixosModules.default;
 
@@ -121,7 +149,6 @@
               nixos-raspberrypi.nixosModules.default
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
-              inputs.firn.nixosModules.default
             ];
 
             nixpkgs.overlays = [ customOverlay ];
@@ -146,13 +173,12 @@
             ];
           };
 
-        x86_64-linux = 
-          { ... }: 
+        x86_64-linux =
+          { ... }:
           {
             imports = [
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
-              inputs.firn.nixosModules.default
               inputs.noctalia.nixosModules.default
               inputs.noctalia-greeter.nixosModules.default
             ];
