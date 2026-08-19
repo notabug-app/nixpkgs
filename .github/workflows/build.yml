@@ -59,6 +59,6 @@ jobs:
         with:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          pushFilter: '(-source$|\.tar\.gz$|\.tar\.xz$|\.patch$|\.drv$|-dev$)'
+          pushFilter: '(-source$|\.tar\.gz$|\.tar\.xz$|\.patch$|\.drv$|-dev$|-deps-.*$)'
       - name: Build package
         run: nix build -L .#packages.${{ matrix.arch }}.${{ matrix.package }}
