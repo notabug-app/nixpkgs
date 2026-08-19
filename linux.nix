@@ -19,9 +19,18 @@ let
       }
     );
 in
-prev.lib.listToAttrs (
-  map (model: {
-    name = "linuxPackages_rpi${model}_7_2";
-    value = mkLinuxPackages model;
-  }) models
-)
+let
+  pkgAttrSet = prev.lib.listToAttrs (
+    map (model: {
+      name = "linuxPackages_rpi${model}_7_2";
+      value = mkLinuxPackages model;
+    }) models
+  );
+in
+pkgAttrSet
+// {
+  kernel-rpi4 = pkgAttrSet.linuxPackages_rpi4_7_2.kernel;
+  cpupower-rpi4 = pkgAttrSet.linuxPackages_rpi4_7_2.cpupower;
+  kernel-rpi5 = pkgAttrSet.linuxPackages_rpi5_7_2.kernel;
+  cpupower-rpi5 = pkgAttrSet.linuxPackages_rpi5_7_2.cpupower;
+}
