@@ -22,6 +22,12 @@ let
           DRM_RADEON = no;
           DRM_NOUVEAU = no;
         };
+        kernelPatches = [
+          {
+            name = "fix-intel-display";
+            patch = ./fix-intel-display.patch;
+          }
+        ];
       }
     );
 in
