@@ -6,15 +6,38 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Generate matrix
+        id: set-matrix
+        run: |
+          x86=$(nix eval --json .#packages.x86_64-linux --apply 'builtins.attrNames')
+          arm=$(nix eval --json .#packages.aarch64-linux --apply 'builtins.attrNames')
+          matrix=$(jq -c -n --argjson x86 "$x86" --argjson arm "$arm" '
+            {
+              include: (
+                ($x86 | map({os: "ubuntu-latest", arch: "x86_64-linux", package: .})) +
+                ($arm | map({os: "ubuntu-24.04-arm", arch: "aarch64-linux", package: .}))
+              )
+            }
+          ')
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
   build:
+    needs: evaluate
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            arch: x86_64-linux
-          - os: ubuntu-24.04-arm
-            arch: aarch64-linux
+      matrix: ${{ fromJSON(needs.evaluate.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -37,5 +60,5 @@ jobs:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
           pushFilter: '(-source$|\.tar\.gz$|\.tar\.xz$|\.patch$|\.drv$)'
-      - name: Build packages
-        run: nix run github:Mic92/nix-fast-build -- --flake .#packages.${{ matrix.arch }}
+      - name: Build package
+        run: nix build -L .#packages.${{ matrix.arch }}.${{ matrix.package }}
