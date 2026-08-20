@@ -1,16 +1,20 @@
 {
   description = "Raspberry Pi Flake Drop-in Replacement with Custom Kernel and Packages";
+
   nixConfig = {
     extra-substituters = [ "https://notabug.cachix.org" ];
     extra-trusted-public-keys = [ "notabug.cachix.org-1:iLePK0RgxY/axZfhjJQJw9VXLg2myZODqkSUUi4jEEE=" ];
+    extra-trusted-substituters = [ "https://notabug.cachix.org" ];
   };
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     nixos-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,23 +24,32 @@
       url = "git+ssh://git@github.com/notabug-app/cf.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     void = {
       url = "git+ssh://git@github.com/notabug-app/void.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     helium = {
       url = "git+ssh://git@github.com/s-Sizz/helium.git";
     };
+
     noctalia = {
       url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+
     };
+
     noctalia-greeter = {
       url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     vaultwarden-src = {
       url = "github:dani-garcia/vaultwarden/1.37.1";
       flake = false;
     };
+
     webvault-src = {
       url = "https://github.com/dani-garcia/bw_web_builds/releases/download/v2026.6.4/bw_web_v2026.6.4.tar.gz";
       flake = false;
