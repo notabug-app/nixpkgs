@@ -21,8 +21,8 @@ jobs:
       - name: Generate matrix
         id: set-matrix
         run: |
-          x86=$(nix eval --json .#packages.x86_64-linux --apply 'builtins.attrNames')
-          arm=$(nix eval --json .#packages.aarch64-linux --apply 'builtins.attrNames')
+          x86=$(nix eval --accept-flake-config --json .#packages.x86_64-linux --apply 'builtins.attrNames')
+          arm=$(nix eval --accept-flake-config --json .#packages.aarch64-linux --apply 'builtins.attrNames')
           matrix=$(jq -c -n --argjson x86 "$x86" --argjson arm "$arm" '
             {
               include: (
@@ -59,4 +59,4 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
           pushFilter: '(-source$|\.tar\.gz$|\.tar\.xz$|\.patch$|\.drv$|-dev$|-deps-.*$)'
       - name: Build package
-        run: nix build -L .#packages.${{ matrix.arch }}.${{ matrix.package }}
+        run: nix build --accept-flake-config -L .#packages.${{ matrix.arch }}.${{ matrix.package }}
