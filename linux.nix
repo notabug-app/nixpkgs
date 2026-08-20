@@ -68,6 +68,12 @@ let
             NET_VENDOR_NVIDIA = mkForce no;
             NET_VENDOR_QLOGIC = mkForce no;
             NET_VENDOR_SUN = mkForce no;
+            NET_VENDOR_NATSEMI = mkForce no;
+            NET_VENDOR_NETRONOME = mkForce no;
+            NET_VENDOR_8390 = mkForce no;
+            NET_VENDOR_OKI = mkForce no;
+            NET_VENDOR_PENSANDO = mkForce no;
+            ETHOC = mkForce no;
             WLAN_VENDOR_INTEL = mkForce no;
             WLAN_VENDOR_MEDIATEK = mkForce no;
             WLAN_VENDOR_RALINK = mkForce no;
