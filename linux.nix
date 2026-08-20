@@ -16,12 +16,15 @@ let
         modDirVersion = "7.2.0";
         tag = "48599d5d6403fd9680b2f5582a7b7b17a0c9d018";
         srcHash = "sha256-rBR1UMSicc7QyRcaBK9i5jqt1/EgorpWaBWeTJYfcY8=";
-        structuredExtraConfig = with prev.lib; with prev.lib.kernel; {
-          DRM_I915 = mkForce no;
-          DRM_AMDGPU = mkForce no;
-          DRM_RADEON = mkForce no;
-          DRM_NOUVEAU = mkForce no;
-        };
+        structuredExtraConfig =
+          with prev.lib;
+          with prev.lib.kernel;
+          {
+            DRM_I915 = mkForce no;
+            DRM_AMDGPU = mkForce no;
+            DRM_RADEON = mkForce no;
+            DRM_NOUVEAU = mkForce no;
+          };
         kernelPatches = [
           {
             name = "fix-intel-display";
