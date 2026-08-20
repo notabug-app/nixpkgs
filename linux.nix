@@ -25,12 +25,6 @@ let
             DRM_RADEON = mkForce no;
             DRM_NOUVEAU = mkForce no;
           };
-        kernelPatches = [
-          {
-            name = "fix-intel-display";
-            patch = ./fix-intel-display.patch;
-          }
-        ];
       }
     );
 in
