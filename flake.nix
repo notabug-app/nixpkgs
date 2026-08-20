@@ -3,8 +3,9 @@
 
   nixConfig = {
     extra-substituters = [ "https://notabug.cachix.org" ];
-    extra-trusted-public-keys = [ "notabug.cachix.org-1:iLePK0RgxY/axZfhjJQJw9VXLg2myZODqkSUUi4jEEE=" ];
     extra-trusted-substituters = [ "https://notabug.cachix.org" ];
+    extra-trusted-public-keys = [ "notabug.cachix.org-1:iLePK0RgxY/axZfhjJQJw9VXLg2myZODqkSUUi4jEEE=" ];
+
   };
 
   inputs = {
