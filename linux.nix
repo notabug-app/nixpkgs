@@ -2,20 +2,22 @@
   final,
   prev,
   inputs,
+  versions,
 }:
 let
   models = [
     "4"
     "5"
   ];
+  kernelVersion = versions.kernel;
   mkLinuxPackages =
     rpiModel:
     prev.linuxPackagesFor (
       prev.callPackage "${inputs.nixos-raspberrypi}/pkgs/linux-rpi/package.nix" {
         inherit rpiModel;
-        modDirVersion = "7.2.0";
-        tag = "48599d5d6403fd9680b2f5582a7b7b17a0c9d018";
-        srcHash = "sha256-rBR1UMSicc7QyRcaBK9i5jqt1/EgorpWaBWeTJYfcY8=";
+        modDirVersion = kernelVersion.modDirVersion;
+        tag = kernelVersion.tag;
+        srcHash = kernelVersion.srcHash;
         structuredExtraConfig =
           with prev.lib;
           with prev.lib.kernel;
@@ -23,7 +25,8 @@ let
             disabledModules = import ./disabled-modules.nix;
             disabledConfig = genAttrs disabledModules (name: mkForce no);
           in
-          disabledConfig // {
+          disabledConfig
+          // {
             # Server Optimizations (Explicitly enabled)
             PREEMPT_NONE = mkForce yes;
             HZ_250 = mkForce yes;

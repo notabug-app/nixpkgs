@@ -119,43 +119,6 @@
         "type": "github"
       }
     },
-    "flake-utils_3": {
-      "inputs": {
-        "systems": "systems_3"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "helium": {
-      "inputs": {
-        "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1786969809,
-        "narHash": "sha256-OgQSGd/bKwf4jiBiDylOb9RAeAX/cQKwh2a55t9PBQo=",
-        "ref": "refs/heads/master",
-        "rev": "52f0c403a27c5b5822fb4ecf4503d2c7eb15af21",
-        "revCount": 6,
-        "type": "git",
-        "url": "ssh://git@github.com/s-Sizz/helium.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/s-Sizz/helium.git"
-      }
-    },
     "nixos-images": {
       "inputs": {
         "nixos-stable": [
@@ -206,22 +169,6 @@
       }
     },
     "nixpkgs": {
-      "locked": {
-        "lastModified": 1785828668,
-        "narHash": "sha256-8fsyqeO+mJqvIzeO4xIpgJe/f7MTbbVTEC6RT6WSXNs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "e72e4f299401a3689d4b3d5fc6496b11db7064eb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
       "locked": {
         "lastModified": 1787070829,
         "narHash": "sha256-vXNVDVtvfiQuXthP0NHPFdNvvMTkGpx0UP8oddIWbNk=",
@@ -280,15 +227,12 @@
     "root": {
       "inputs": {
         "cf": "cf",
-        "helium": "helium",
         "nixos-raspberrypi": "nixos-raspberrypi",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
         "treefmt-nix": "treefmt-nix",
-        "vaultwarden-src": "vaultwarden-src",
-        "void": "void",
-        "webvault-src": "webvault-src"
+        "void": "void"
       }
     },
     "systems": {
@@ -307,21 +251,6 @@
       }
     },
     "systems_2": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -356,27 +285,10 @@
         "type": "github"
       }
     },
-    "vaultwarden-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1785330824,
-        "narHash": "sha256-QS9dUOlId4LT6rNgLwVxShX3xpnykpbiFsc0x88Bojc=",
-        "owner": "dani-garcia",
-        "repo": "vaultwarden",
-        "rev": "2629bcbe1380c894e3a7f52cafcac3988edb8fbb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dani-garcia",
-        "ref": "1.37.1",
-        "repo": "vaultwarden",
-        "type": "github"
-      }
-    },
     "void": {
       "inputs": {
         "crane": "crane_2",
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_2",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -393,19 +305,6 @@
       "original": {
         "type": "git",
         "url": "ssh://git@github.com/notabug-app/void.git"
-      }
-    },
-    "webvault-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1784905520,
-        "narHash": "sha256-T568KU1KMy/tGHoOeCayMer0AzIV/PmISEynP1dwka8=",
-        "type": "tarball",
-        "url": "https://github.com/dani-garcia/bw_web_builds/releases/download/v2026.6.4/bw_web_v2026.6.4.tar.gz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://github.com/dani-garcia/bw_web_builds/releases/download/v2026.6.4/bw_web_v2026.6.4.tar.gz"
       }
     }
   },

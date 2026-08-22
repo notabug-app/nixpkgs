@@ -31,10 +31,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    helium = {
-      url = "git+ssh://git@github.com/s-Sizz/helium.git";
-    };
-
     noctalia = {
       url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,15 +42,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    vaultwarden-src = {
-      url = "github:dani-garcia/vaultwarden/1.37.1";
-      flake = false;
-    };
-
-    webvault-src = {
-      url = "https://github.com/dani-garcia/bw_web_builds/releases/download/v2026.6.4/bw_web_v2026.6.4.tar.gz";
-      flake = false;
-    };
   };
 
   outputs =
@@ -70,12 +57,27 @@
         "x86_64-linux"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
+      versions = builtins.fromJSON (builtins.readFile ./versions.json);
       customOverlay =
         final: prev:
-        (import ./pkgs { inherit final prev inputs; })
+        (import ./pkgs {
+          inherit
+            final
+            prev
+            inputs
+            versions
+            ;
+        })
         // (
           if prev.stdenv.hostPlatform.system == "aarch64-linux" then
-            (import ./linux.nix { inherit final prev inputs; })
+            (import ./linux.nix {
+              inherit
+                final
+                prev
+                inputs
+                versions
+                ;
+            })
           else
             { }
         );
@@ -83,11 +85,34 @@
     {
       overlays = {
         default = customOverlay;
-        x86_64-linux = final: prev: import ./pkgs { inherit final prev inputs; };
+        x86_64-linux =
+          final: prev:
+          import ./pkgs {
+            inherit
+              final
+              prev
+              inputs
+              versions
+              ;
+          };
         aarch64-linux =
           final: prev:
-          (import ./pkgs { inherit final prev inputs; })
-          // (import ./linux.nix { inherit final prev inputs; });
+          (import ./pkgs {
+            inherit
+              final
+              prev
+              inputs
+              versions
+              ;
+          })
+          // (import ./linux.nix {
+            inherit
+              final
+              prev
+              inputs
+              versions
+              ;
+          });
       };
 
       devShells = forAllSystems (
@@ -101,7 +126,7 @@
               (pkgs.callPackage ./devshells/update-vaultwarden.nix { })
               (pkgs.callPackage ./devshells/update-helium.nix { })
               (pkgs.callPackage ./devshells/update-kernel.nix { })
-              (pkgs.callPackage ./devshells/commit-update.nix { })
+              (pkgs.callPackage ./devshells/update-flake.nix { })
             ];
           };
         }
@@ -134,6 +159,7 @@
             void
             vaultwarden
             vaultwarden-vault
+            helium
             ;
         }
       );
