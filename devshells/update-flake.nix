@@ -10,7 +10,7 @@ pkgs.writeShellApplication {
             set -euo pipefail
 
             echo "Updating flake inputs..."
-            nix flake update
+            nix flake update --accept-flake-config
 
             rm -f .update-messages
 
