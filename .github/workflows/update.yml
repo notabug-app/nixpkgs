@@ -23,11 +23,7 @@ jobs:
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ steps.app-token.outputs.token }}
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: notabug
-          # No authToken provided, so it will only pull, never push!
+
 
       - name: Run Update Script
         env:
