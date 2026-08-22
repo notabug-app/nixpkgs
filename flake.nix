@@ -143,8 +143,6 @@
         }
       );
 
-      lib = nixos-raspberrypi.lib;
-
       homeModules.noctalia = inputs.noctalia.homeModules.default;
 
       nixosModules = {
@@ -158,12 +156,18 @@
           {
             imports = [
               nixos-raspberrypi.nixosModules.default
-              nixos-raspberrypi.lib.inject-overlays
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
             ];
 
-            nixpkgs.overlays = [ customOverlay ];
+            nixpkgs.overlays = [
+              customOverlay
+              nixos-raspberrypi.overlays.bootloader
+              nixos-raspberrypi.overlays.vendor-kernel
+              nixos-raspberrypi.overlays.vendor-firmware
+              nixos-raspberrypi.overlays.kernel-and-firmware
+              nixos-raspberrypi.overlays.vendor-pkgs
+            ];
 
             boot.kernelPackages = lib.mkMerge [
               (lib.mkIf (config.boot.loader.raspberry-pi.variant == "4") (
