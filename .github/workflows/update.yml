@@ -9,12 +9,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Install Nix
         uses: cachix/install-nix-action@v30
         with:
@@ -25,7 +19,27 @@ jobs:
         with:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Update and Commit
+      - name: Run Update Script
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: nix develop -c update-flake
+      - name: Read PR Message
+        id: pr_msg
+        run: |
+          if [ -f .pr-message ]; then
+            echo "body<<EOF" >> $GITHUB_OUTPUT
+            cat .pr-message >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "body=chore: update flake and packages" >> $GITHUB_OUTPUT
+          fi
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ${{ steps.pr_msg.outputs.body }}
+          title: "chore: update flake and packages"
+          body: ${{ steps.pr_msg.outputs.body }}
+          branch: "chore/update-flake"
+          delete-branch: true
+          sign-commits: true

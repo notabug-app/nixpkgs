@@ -31,22 +31,23 @@ pkgs.writeShellApplication {
             exit 0
         fi
 
-        COMMIT_MSG="chore: update flake and packages"
-        
-        if [ -f .update-messages ]; then
-            COMMIT_MSG="$COMMIT_MSG
+    COMMIT_MSG="chore: update flake and packages"
+    
+    if [ -f .update-messages ]; then
+        COMMIT_MSG="$COMMIT_MSG
 
-    Updates:
-    $(cat .update-messages)"
-            rm .update-messages
-        fi
+Updates:
+$(cat .update-messages)"
+        rm .update-messages
+    fi
 
-        if [ "''${GITHUB_ACTIONS:-}" = "true" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        fi
+    if [ "''${GITHUB_ACTIONS:-}" = "true" ]; then
+        echo "Running in GitHub Actions, skipping git commit so the PR action can create it."
+        echo "$COMMIT_MSG" > .pr-message
+        exit 0
+    fi
 
-        git commit -m "$COMMIT_MSG"
-        echo "Changes committed!"
+    git commit -m "$COMMIT_MSG"
+    echo "Changes committed!"
   '';
 }
