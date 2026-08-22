@@ -158,6 +158,7 @@
           {
             imports = [
               nixos-raspberrypi.nixosModules.default
+              nixos-raspberrypi.lib.inject-overlays
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
             ];
