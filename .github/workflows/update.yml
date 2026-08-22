@@ -13,29 +13,24 @@ jobs:
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
-
       - name: Install Nix
         uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ steps.app-token.outputs.token }}
-
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
         with:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-
       - name: Run Update Script
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: nix develop -c update-flake
-
       - name: Read PR Message
         id: pr_msg
         run: |
@@ -46,7 +41,6 @@ jobs:
           else
             echo "body=chore: update flake and packages" >> $GITHUB_OUTPUT
           fi
-
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
@@ -58,7 +52,6 @@ jobs:
           branch: "chore/update-flake"
           delete-branch: true
           sign-commits: true
-
       - name: Auto-Merge Pull Request
         if: steps.cpr.outputs.pull-request-operation == 'created'
         env:
