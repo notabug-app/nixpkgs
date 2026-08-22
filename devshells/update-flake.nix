@@ -41,8 +41,11 @@ pkgs.writeShellApplication {
             rm .update-messages
         fi
 
-        git config user.name "github-actions[bot]"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        if [ "''${GITHUB_ACTIONS:-}" = "true" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        fi
+
         git commit -m "$COMMIT_MSG"
         echo "Changes committed!"
   '';
