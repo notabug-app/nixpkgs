@@ -27,7 +27,8 @@ jobs:
         uses: cachix/cachix-action@v15
         with:
           name: notabug
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          # No authToken provided, so it will only pull, never push!
+
       - name: Run Update Script
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -39,6 +40,7 @@ jobs:
             echo "body<<EOF" >> $GITHUB_OUTPUT
             cat .pr-message >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
+            rm .pr-message
           else
             echo "body=chore: update flake and packages" >> $GITHUB_OUTPUT
           fi
@@ -58,4 +60,4 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --auto || gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash
+          gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --auto --delete-branch || gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --delete-branch
