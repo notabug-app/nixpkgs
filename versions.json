@@ -1,12 +1,12 @@
 {
   "helium": {
-    "version": "0.15.5.1",
+    "version": "0.15.6.1",
     "x86_64-linux": {
-      "hash": "sha256:15zxjb0ryn61bi90n8qd5y5fdkrp598kjf9fv44k2bmblvhiwjpk",
+      "hash": "sha256:0dix210clgiy1hagirsh17gj8v8d74ahds4bx8hmpg5jjpjy4p2d",
       "urlarch": "x86_64"
     },
     "aarch64-linux": {
-      "hash": "sha256:1zjcysswg2l6wpw1vhpa7319iwi19rspwsk6b9gdwx53f43kscnr",
+      "hash": "sha256:1zi1d2gxmjyfgg03gqh32fyp9sg6c5sl9wxf8cnwalmwqzix8nb3",
       "urlarch": "arm64"
     }
   },
@@ -17,8 +17,8 @@
     "branch": "7.2.y"
   },
   "vaultwarden": {
-    "version": "1.37.1",
-    "hash": "0dx2077wfd672vi9d4pjk73gf5aaf42jyq5kxb9q4xs8x585sbs1"
+    "version": "1.37.2",
+    "hash": "1vv0r358520707v975f5hinvcfwvfz1yzjrbc67playmw2js805s"
   },
   "webvault": {
     "version": "v2026.6.4",
