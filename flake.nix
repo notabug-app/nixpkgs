@@ -22,12 +22,12 @@
     };
 
     cf = {
-      url = "git+ssh://git@github.com/notabug-app/cf.git";
+      url = "github:notabug-app/cf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     void = {
-      url = "git+ssh://git@github.com/notabug-app/void.git";
+      url = "github:notabug-app/void";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

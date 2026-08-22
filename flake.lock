@@ -27,15 +27,15 @@
       "locked": {
         "lastModified": 1785250649,
         "narHash": "sha256-04aFZonoUjwVnk5v2UvEiA3bRrDQZ0AHqDMucyDjQE0=",
-        "ref": "refs/heads/master",
+        "owner": "notabug-app",
+        "repo": "cf",
         "rev": "edf68b4672677e167d79ba2fb53c85d8da4ce8fb",
-        "revCount": 2,
-        "type": "git",
-        "url": "ssh://git@github.com/notabug-app/cf.git"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/notabug-app/cf.git"
+        "owner": "notabug-app",
+        "repo": "cf",
+        "type": "github"
       }
     },
     "crane": {
@@ -296,15 +296,15 @@
       "locked": {
         "lastModified": 1785501494,
         "narHash": "sha256-rxHo8owwhe9OuWea1gaGCnX8hRxTOyZxc7qtEhlF+VM=",
-        "ref": "refs/heads/main",
+        "owner": "notabug-app",
+        "repo": "void",
         "rev": "7cd890f35837261ecc69f4c4dec0b60792f0e780",
-        "revCount": 26,
-        "type": "git",
-        "url": "ssh://git@github.com/notabug-app/void.git"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/notabug-app/void.git"
+        "owner": "notabug-app",
+        "repo": "void",
+        "type": "github"
       }
     }
   },
