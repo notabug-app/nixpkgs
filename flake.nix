@@ -83,37 +83,7 @@
         );
     in
     {
-      overlays = {
-        default = customOverlay;
-        x86_64-linux =
-          final: prev:
-          import ./pkgs {
-            inherit
-              final
-              prev
-              inputs
-              versions
-              ;
-          };
-        aarch64-linux =
-          final: prev:
-          (import ./pkgs {
-            inherit
-              final
-              prev
-              inputs
-              versions
-              ;
-          })
-          // (import ./linux.nix {
-            inherit
-              final
-              prev
-              inputs
-              versions
-              ;
-          });
-      };
+      overlays.default = customOverlay;
 
       devShells = forAllSystems (
         system:
