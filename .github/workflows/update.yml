@@ -23,8 +23,6 @@ jobs:
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ steps.app-token.outputs.token }}
-
-
       - name: Run Update Script
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
