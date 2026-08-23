@@ -2,10 +2,18 @@
   description = "Raspberry Pi Flake Drop-in Replacement with Custom Kernel and Packages";
 
   nixConfig = {
-    extra-substituters = [ "https://notabug.cachix.org" ];
-    extra-trusted-substituters = [ "https://notabug.cachix.org" ];
-    extra-trusted-public-keys = [ "notabug.cachix.org-1:iLePK0RgxY/axZfhjJQJw9VXLg2myZODqkSUUi4jEEE=" ];
-
+    extra-substituters = [
+      "https://notabug.cachix.org"
+      "https://noctalia.cachix.org"
+    ];
+    extra-trusted-substituters = [
+      "https://notabug.cachix.org"
+      "https://noctalia.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "notabug.cachix.org-1:iLePK0RgxY/axZfhjJQJw9VXLg2myZODqkSUUi4jEEE="
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    ];
   };
 
   inputs = {
