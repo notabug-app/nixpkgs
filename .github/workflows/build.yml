@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - main
-  pull_request:
+    paths:
+      - '**.nix'
+      - 'flake.lock'
+      - 'versions.json'
   workflow_dispatch:
 jobs:
   evaluate:
