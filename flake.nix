@@ -137,7 +137,6 @@
             void
             vaultwarden
             vaultwarden-vault
-            helium
             ;
         }
       );

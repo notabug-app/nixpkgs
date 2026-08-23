@@ -26,7 +26,7 @@ jobs:
       - name: Run Update Script
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: nix develop -c update-flake
+        run: nix develop --accept-flake-config -c update-flake
       - name: Read PR Message
         id: pr_msg
         run: |

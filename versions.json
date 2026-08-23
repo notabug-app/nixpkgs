@@ -4,10 +4,6 @@
     "x86_64-linux": {
       "hash": "sha256:0dix210clgiy1hagirsh17gj8v8d74ahds4bx8hmpg5jjpjy4p2d",
       "urlarch": "x86_64"
-    },
-    "aarch64-linux": {
-      "hash": "sha256:1zi1d2gxmjyfgg03gqh32fyp9sg6c5sl9wxf8cnwalmwqzix8nb3",
-      "urlarch": "arm64"
     }
   },
   "kernel": {

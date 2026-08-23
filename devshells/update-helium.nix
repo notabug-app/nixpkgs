@@ -30,13 +30,11 @@ pkgs.writeShellApplication {
     fi
 
     HASH_X86=$(nix-prefetch-url "https://github.com/imputnet/helium-linux/releases/download/''${VERSION}/helium-''${VERSION}-x86_64_linux.tar.xz")
-    HASH_ARM=$(nix-prefetch-url "https://github.com/imputnet/helium-linux/releases/download/''${VERSION}/helium-''${VERSION}-arm64_linux.tar.xz")
-
+    
     jq \
       --arg v "$VERSION" \
       --arg hx "sha256:$HASH_X86" \
-      --arg ha "sha256:$HASH_ARM" \
-      '.helium.version = $v | .helium["x86_64-linux"].hash = $hx | .helium["aarch64-linux"].hash = $ha' \
+      '.helium.version = $v | .helium["x86_64-linux"].hash = $hx | del(.helium["aarch64-linux"])' \
       versions.json > versions.json.tmp && mv versions.json.tmp versions.json
 
     echo "helium: $VERSION" >> .update-messages

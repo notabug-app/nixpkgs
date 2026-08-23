@@ -119,7 +119,6 @@ stdenv.mkDerivation {
     homepage = "https://github.com/imputnet/helium-linux";
     platforms = [
       "x86_64-linux"
-      "aarch64-linux"
     ];
   };
 }
