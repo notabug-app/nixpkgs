@@ -40,7 +40,7 @@ jobs:
           fi
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ steps.app-token.outputs.token }}
           commit-message: ${{ steps.pr_msg.outputs.body }}
