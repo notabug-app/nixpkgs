@@ -43,8 +43,6 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ steps.app-token.outputs.token }}
-          author: "notabug bot <notabug[bot]@users.noreply.github.com>"
-          committer: "notabug bot <notabug[bot]@users.noreply.github.com>"
           commit-message: ${{ steps.pr_msg.outputs.body }}
           title: "chore: update flake and packages"
           body: ${{ steps.pr_msg.outputs.body }}
