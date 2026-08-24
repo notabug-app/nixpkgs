@@ -9,10 +9,9 @@ pkgs.writeShellApplication {
   text = ''
             set -euo pipefail
 
-            echo "Updating flake inputs..."
-            nix flake update --accept-flake-config
-
             rm -f .update-messages
+            echo "Updating flake inputs..."
+            nix flake update --accept-flake-config 2>&1 | grep -oP "(?<=(Updated|Added) input ').*(?=':)" | awk '{print "flake: "$1}' >> .update-messages || true
 
             echo "Checking for kernel updates..."
             update-kernel --no-commit
@@ -33,12 +32,14 @@ pkgs.writeShellApplication {
 
         COMMIT_MSG="chore: update flake and packages"
         
-        if [ -f .update-messages ]; then
+        if [ -s .update-messages ]; then
             COMMIT_MSG="$COMMIT_MSG
 
     Updates:
     $(cat .update-messages)"
             rm .update-messages
+        else
+            rm -f .update-messages
         fi
 
         if [ "''${GITHUB_ACTIONS:-}" = "true" ]; then

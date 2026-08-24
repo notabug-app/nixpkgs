@@ -75,7 +75,7 @@ pkgs.writeShellApplication {
       versions.json > versions.json.tmp && mv versions.json.tmp versions.json
 
     SHORT_COMMIT="''${COMMIT:0:7}"
-    echo "kernel: $MOD_DIR_VERSION ($SHORT_COMMIT)" > .update-messages
+    echo "kernel: $MOD_DIR_VERSION ($SHORT_COMMIT)" >> .update-messages
 
     if [ "$NO_COMMIT" -eq 1 ]; then
         exit 0
