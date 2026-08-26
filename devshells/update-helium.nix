@@ -30,7 +30,7 @@ pkgs.writeShellApplication {
     fi
 
     HASH_X86=$(nix-prefetch-url "https://github.com/imputnet/helium-linux/releases/download/''${VERSION}/helium-''${VERSION}-x86_64_linux.tar.xz")
-    
+
     jq \
       --arg v "$VERSION" \
       --arg hx "sha256:$HASH_X86" \
