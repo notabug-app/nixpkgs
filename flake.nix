@@ -4,15 +4,12 @@
   nixConfig = {
     extra-substituters = [
       "https://notabug.cachix.org"
-      "https://noctalia.cachix.org"
     ];
     extra-trusted-substituters = [
       "https://notabug.cachix.org"
-      "https://noctalia.cachix.org"
     ];
     extra-trusted-public-keys = [
       "notabug.cachix.org-1:iLePK0RgxY/axZfhjJQJw9VXLg2myZODqkSUUi4jEEE="
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
     ];
   };
 
@@ -38,18 +35,6 @@
       url = "github:notabug-app/void";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    noctalia = {
-      url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
-
-    };
-
-    noctalia-greeter = {
-      url = "github:noctalia-dev/noctalia-greeter";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
   };
 
   outputs =
@@ -119,8 +104,6 @@
         }
         // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           inherit (pkgs)
-            noctalia
-            noctalia-greeter
             nvidia-legacy-580
             helium
             ;
@@ -149,8 +132,6 @@
           config.allowUnfree = true;
         }
       );
-
-      homeModules.noctalia = inputs.noctalia.homeModules.default;
 
       nixosModules = {
         aarch64-linux =
@@ -202,8 +183,6 @@
             imports = [
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
-              inputs.noctalia.nixosModules.default
-              inputs.noctalia-greeter.nixosModules.default
             ];
             nixpkgs.overlays = [ customOverlay ];
           };
