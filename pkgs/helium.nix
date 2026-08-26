@@ -117,6 +117,7 @@ stdenv.mkDerivation {
   meta = with lib; {
     description = "Helium browser";
     homepage = "https://github.com/imputnet/helium-linux";
+    mainProgram = "helium";
     platforms = [
       "x86_64-linux"
     ];
