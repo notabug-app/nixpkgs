@@ -104,7 +104,6 @@
         }
         // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           inherit (pkgs)
-            nvidia-legacy-580
             helium
             ;
         }
