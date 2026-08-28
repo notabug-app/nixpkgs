@@ -1,8 +1,8 @@
 {
   "helium": {
-    "version": "0.15.7.1",
+    "version": "0.16.1.1",
     "x86_64-linux": {
-      "hash": "sha256:17zv9q007rgmmfng5njjgh0wljymx00f0f56wd8hvzmxvqn8j0ii",
+      "hash": "sha256:1qb6sr1fxx9qh1sslzmvp7nisk0di4lasbb106w3sjg6hpzgnlmv",
       "urlarch": "x86_64"
     }
   },
@@ -17,7 +17,7 @@
     "hash": "1vv0r358520707v975f5hinvcfwvfz1yzjrbc67playmw2js805s"
   },
   "webvault": {
-    "version": "v2026.6.4",
-    "hash": "1bwif1bkz9sc924gkz0m681z9siin8k7h3ks33njycsa9llvr7jg"
+    "version": "v2026.7.0",
+    "hash": "0hiipdq7mnq8zmdp7b4jxz5lhm3lhgp1p91xyqa2grqjlzsfgv5g"
   }
 }
