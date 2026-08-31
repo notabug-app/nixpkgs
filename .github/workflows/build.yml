@@ -75,3 +75,8 @@ jobs:
           pushFilter: '(-source$|\.tar\.gz$|\.tar\.xz$|\.patch$|\.drv$|-dev$|-deps-.*$)'
       - name: Build package
         run: nix build --accept-flake-config -L .#packages.${{ matrix.arch }}.${{ matrix.package }}
+      - name: Push kernel out path explicitly
+        if: startsWith(matrix.package, 'kernel-')
+        run: |
+          nix build --accept-flake-config -L .#packages.${{ matrix.arch }}.${{ matrix.package }} --json > built.json
+          jq -r '.[].outputs.out' built.json | cachix push notabug
