@@ -7,9 +7,9 @@
     }
   },
   "kernel": {
-    "tag": "003a7d95a5c97f699cb62ffcda6d618130855052",
+    "tag": "a56731489b39e1c482b7cc87237dbe3b57d381ab",
     "modDirVersion": "7.2.2",
-    "srcHash": "sha256-287SnMpT/gf4YHDfcYwgoM87RzGVjcZ13OtiewjFs2I=",
+    "srcHash": "sha256-TFJJg3qXlsGtfw4xHkNKTkXT0p3H4s1aw/fxgDLC3/s=",
     "branch": "7.2.y"
   },
   "vaultwarden": {
