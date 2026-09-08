@@ -2,7 +2,7 @@ name: Build Nix Packages
 on:
   push:
     branches:
-      - main
+      - staging
     paths:
       - '**.nix'
       - 'flake.lock'
@@ -80,3 +80,24 @@ jobs:
         run: |
           nix build --accept-flake-config -L .#packages.${{ matrix.arch }}.${{ matrix.package }} --json > built.json
           jq -r '.[].outputs.out' built.json | cachix push notabug
+  promote:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          ref: staging
+          fetch-depth: 0
+      - name: Fast-forward main to staging
+        run: |
+          git push origin HEAD:refs/heads/main
