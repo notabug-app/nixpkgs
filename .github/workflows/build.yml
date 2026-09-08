@@ -75,11 +75,11 @@ jobs:
           pushFilter: '(-source$|\.tar\.gz$|\.tar\.xz$|\.patch$|\.drv$|-dev$|-deps-.*$)'
       - name: Build package
         run: nix build --accept-flake-config -L .#packages.${{ matrix.arch }}.${{ matrix.package }}
-      - name: Push kernel out path explicitly
+      - name: Push kernel outputs explicitly
         if: startsWith(matrix.package, 'kernel-')
         run: |
-          nix build --accept-flake-config -L .#packages.${{ matrix.arch }}.${{ matrix.package }} --json > built.json
-          jq -r '.[].outputs.out' built.json | cachix push notabug
+          nix build --accept-flake-config -L '.#packages.${{ matrix.arch }}.${{ matrix.package }}^*' --json > built.json
+          jq -r '.[].outputs | to_entries[] | select(.key != "dev") | .value' built.json | cachix push notabug
   promote:
     needs: build
     runs-on: ubuntu-latest
