@@ -87,6 +87,10 @@ jobs:
             echo "::error::No deployment outputs found in built.json"
             exit 1
           fi
+          config_path=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.${{ matrix.package }}.configfile" 2>/dev/null || true)
+          if [ -n "$config_path" ] && [ -e "$config_path" ]; then
+            paths=$(printf "%s\n%s" "$paths" "$config_path")
+          fi
           echo "Store paths to push:"
           echo "$paths"
           for i in {1..3}; do
