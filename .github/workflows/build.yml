@@ -76,7 +76,8 @@ jobs:
           skipPush: true
       - name: Build package
         run: |
-          nix build --accept-flake-config --no-link -L --json ".#packages.${{ matrix.arch }}.${{ matrix.package }}^*" > built.json
+          outputs=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.${{ matrix.package }}" --apply 'p: builtins.concatStringsSep "," (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (p.outputs or ["out"]))')
+          nix build --accept-flake-config --no-link -L --json ".#packages.${{ matrix.arch }}.${{ matrix.package }}^$outputs" > built.json
           jq empty built.json
       - name: Push deployment outputs to Cachix
         env:
@@ -86,10 +87,6 @@ jobs:
           if [ -z "$paths" ]; then
             echo "::error::No deployment outputs found in built.json"
             exit 1
-          fi
-          config_path=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.${{ matrix.package }}.configfile" 2>/dev/null || true)
-          if [ -n "$config_path" ] && [ -e "$config_path" ]; then
-            paths=$(printf "%s\n%s" "$paths" "$config_path")
           fi
           echo "Store paths to push:"
           echo "$paths"
