@@ -155,11 +155,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788658752,
-        "narHash": "sha256-gNPe4RUYMNTMIyxDDeUCTBUcmUFGUpHybC7IZrc6Fas=",
+        "lastModified": 1789176430,
+        "narHash": "sha256-YeKTvy1zKI08jzs1uaQzDEGxSWD6shspKTt5X0MXE5M=",
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "1c639b2e8c824704c5abfd772493392d9e6a261a",
+        "rev": "0b7254d49ed3b660e57a3113c8b6cfc33b2e0c61",
         "type": "github"
       },
       "original": {
@@ -252,11 +252,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789143349,
-        "narHash": "sha256-9dpGD4LvkdvVCeOLta5Fvh2KrW5JjTpcCvOE/x2h1w0=",
+        "lastModified": 1789145005,
+        "narHash": "sha256-lXH3fFmELoEnL0pdh+gsOKZfMzYdKTG7xEO464Hz7jI=",
         "owner": "notabug-app",
         "repo": "void",
-        "rev": "265e30d2470cf01b29d7d5740baaf78ac15b51dc",
+        "rev": "7338e13c936035c909a64b19851c56e58eef38f5",
         "type": "github"
       },
       "original": {
