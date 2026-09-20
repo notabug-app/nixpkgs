@@ -9,6 +9,11 @@ on:
       - 'versions.json'
       - '.github/workflows/build.yml'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   evaluate:
     runs-on: ubuntu-latest
