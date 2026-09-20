@@ -27,10 +27,12 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra_nix_config: |
+          extra-conf: |
             access-tokens = github.com=${{ steps.app-token.outputs.token }}
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Generate matrix
         id: set-matrix
         run: |
@@ -64,9 +66,9 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra_nix_config: |
+          extra-conf: |
             access-tokens = github.com=${{ steps.app-token.outputs.token }}
       - name: Setup Cachix
         uses: cachix/cachix-action@v17
@@ -74,6 +76,8 @@ jobs:
           name: notabug
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
           skipPush: true
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Build package
         run: |
           outputs=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.${{ matrix.package }}" --apply 'p: builtins.concatStringsSep "," (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (p.outputs or ["out"]))')
