@@ -19,17 +19,17 @@
     "cf": {
       "inputs": {
         "crane": "crane",
-        "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1785250649,
-        "narHash": "sha256-04aFZonoUjwVnk5v2UvEiA3bRrDQZ0AHqDMucyDjQE0=",
+        "lastModified": 1789990803,
+        "narHash": "sha256-vASAkDYNBOV2uYf8Rv3axUXSRX0QqWnRB/rpFQ3I76Y=",
         "owner": "notabug-app",
         "repo": "cf",
-        "rev": "edf68b4672677e167d79ba2fb53c85d8da4ce8fb",
+        "rev": "21e414738a321a18d2d96f4c287badf0b2a3c90d",
         "type": "github"
       },
       "original": {
@@ -40,11 +40,11 @@
     },
     "crane": {
       "locked": {
-        "lastModified": 1784564969,
-        "narHash": "sha256-TkTWNhJV/8Wk3czlbz4bwHZkFCaCHPsOy+oJe4PUiXg=",
+        "lastModified": 1789760033,
+        "narHash": "sha256-jtT4yxZpR8seYnlCMMWSSPlFN92zO6ICuZ8pJrmi86k=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "7930f6c291de6f83c257839d434592aa085f290a",
+        "rev": "73b980519cefc727a5f6cc8e5c0947a2f9be6edd",
         "type": "github"
       },
       "original": {
@@ -80,24 +80,6 @@
       "original": {
         "owner": "edolstra",
         "repo": "flake-compat",
-        "type": "github"
-      }
-    },
-    "flake-utils": {
-      "inputs": {
-        "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
         "type": "github"
       }
     },
@@ -137,11 +119,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789922128,
-        "narHash": "sha256-3SyIhG38kFGOuIITOGWn/RoANNlGfqh8jkw/iEj1+HM=",
+        "lastModified": 1789988017,
+        "narHash": "sha256-aaerLzwpB88MgRktgzpXdv6T2GhvPbvOKFI7wlgsoHY=",
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "d65ebb69d7d4a4121af9a340abdb743e9ca3703e",
+        "rev": "8ded6ad72823723ed1455fbf62281103d6673c50",
         "type": "github"
       },
       "original": {
@@ -171,26 +153,32 @@
         "cf": "cf",
         "nixos-raspberrypi": "nixos-raspberrypi",
         "nixpkgs": "nixpkgs",
-        "treefmt-nix": "treefmt-nix",
+        "treefmt-nix": "treefmt-nix_2",
         "void": "void"
       }
     },
-    "systems": {
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "cf",
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "lastModified": 1786901030,
+        "narHash": "sha256-WSFCsDSE5ffgD2MqzkM2CYjeFiKhRF/dJUN8uedb6YE=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "27b3b12a8e6375f28ebe122f07d230ca5459bbfa",
         "type": "github"
       },
       "original": {
-        "owner": "nix-systems",
-        "repo": "default",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
         "type": "github"
       }
     },
-    "treefmt-nix": {
+    "treefmt-nix_2": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -210,7 +198,7 @@
         "type": "github"
       }
     },
-    "treefmt-nix_2": {
+    "treefmt-nix_3": {
       "inputs": {
         "nixpkgs": [
           "void",
@@ -237,14 +225,14 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "treefmt-nix": "treefmt-nix_2"
+        "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1789923263,
-        "narHash": "sha256-UK/ami2/PACxIGFcgBxy2hkGHfRA9Ia55TvGqW0n53A=",
+        "lastModified": 1789990897,
+        "narHash": "sha256-HYR/is7K64qLx9rnXWJ6oKTlD4fj0ZKQsgTvKvUsAKA=",
         "owner": "notabug-app",
         "repo": "void",
-        "rev": "823f5c59afef5c3ed154b273f359a24570acce66",
+        "rev": "4034392df2e8a5270b444a088f9e0ff5b324196e",
         "type": "github"
       },
       "original": {
