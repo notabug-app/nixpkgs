@@ -101,6 +101,7 @@
           pkgs = self.legacyPackages.${system};
         in
         {
+          inherit (pkgs) rusty-man;
         }
         // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           inherit (pkgs)

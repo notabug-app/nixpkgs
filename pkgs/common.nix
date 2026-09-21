@@ -9,4 +9,5 @@ let
 in
 {
   helium = prev.callPackage ./helium.nix { inherit versions; };
+  rusty-man = prev.callPackage ./rusty-man.nix { };
 }
