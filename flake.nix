@@ -101,7 +101,7 @@
           pkgs = self.legacyPackages.${system};
         in
         {
-          inherit (pkgs) rusty-man;
+          inherit (pkgs) rustdoc-text;
         }
         // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           inherit (pkgs)
