@@ -5,7 +5,6 @@ pkgs.writeShellApplication {
   runtimeInputs = with pkgs; [
     git
     nix
-    jq
   ];
   text = ''
         set -euo pipefail
@@ -43,25 +42,8 @@ pkgs.writeShellApplication {
         fi
 
         rm -f .update-messages
-        echo "Updating top-level flake inputs..."
+        echo "Updating flake inputs..."
         nix flake update --accept-flake-config 2>&1 | grep -oP "(?<=(Updated|Added) input ').*(?=':)" | awk '{print "flake: "$1}' >> .update-messages || true
-
-        echo "Updating transitive flake inputs (e.g. crane, flake-utils)..."
-        TRANSITIVE_INPUTS=$(jq -r '
-          .nodes as $nodes
-          | $nodes.root.inputs
-          | to_entries[]
-          | .key as $parent_name
-          | .value as $parent_node
-          | ($nodes[$parent_node].inputs // {})
-          | to_entries[]
-          | select(.value | type == "string")
-          | "\($parent_name)/\(.key)"
-        ' flake.lock)
-
-        if [ -n "$TRANSITIVE_INPUTS" ]; then
-          echo "$TRANSITIVE_INPUTS" | xargs nix flake update --accept-flake-config 2>&1 | grep -oP "(?<=(Updated|Added) input ').*(?=':)" | awk '{print "flake: "$1}' >> .update-messages || true
-        fi
 
         echo "Checking for kernel updates..."
         update-kernel --no-commit
