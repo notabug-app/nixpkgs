@@ -49,7 +49,7 @@ let
             RD_XZ = mkForce yes;
             RD_ZSTD = mkForce yes;
             EXT4_FS = mkForce yes;
-            BTRFS_FS = mkForce module;
+            BTRFS_FS = mkForce yes;
             OVERLAY_FS = mkForce module;
             BLK_DEV_NVME = mkForce yes;
             BLK_DEV_SD = mkForce yes;
