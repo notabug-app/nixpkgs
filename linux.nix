@@ -32,6 +32,10 @@ let
             INPUT_TOUCHSCREEN = mkForce no;
             INPUT_JOYSTICK = mkForce no;
             DRM_V3D = mkForce no;
+            BT = mkForce no;
+            STAGING = mkForce no;
+            NFC = mkForce no;
+            CAN = mkForce no;
 
             # Server Optimizations
             PREEMPT_NONE = mkForce yes;
