@@ -15,169 +15,50 @@ let
     prev.linuxPackagesFor (
       prev.callPackage "${inputs.nixos-raspberrypi}/pkgs/linux-rpi/package.nix" {
         inherit rpiModel;
+        autoModules = false;
         modDirVersion = kernelVersion.modDirVersion;
         tag = kernelVersion.tag;
         srcHash = kernelVersion.srcHash;
         structuredExtraConfig =
           with prev.lib;
           with prev.lib.kernel;
-          let
-            disabledModules = [
-              # x86/other GPUs
-              "DRM_I915"
-              "DRM_XE"
-              "DRM_AMDGPU"
-              "DRM_RADEON"
-              "DRM_NOUVEAU"
-              # Non-Pi ARM GPUs
-              "DRM_PANFROST"
-              "DRM_LIMA"
-              "DRM_MSM"
-              "DRM_ROCKCHIP"
-              "DRM_SUN4I"
-              "DRM_ETNAVIV"
-              "DRM_TEGRA"
-              "DRM_MESON"
-              "DRM_EXYNOS"
-              "DRM_MEDIATEK"
-              # 3D acceleration (keep vc4 for display)
-              "DRM_V3D"
-              # Audio/Media
-              "SOUND"
-              "SND"
-              "MEDIA_SUPPORT"
-              "MEDIA_ANALOG_TV_SUPPORT"
-              "MEDIA_DIGITAL_TV_SUPPORT"
-              "MEDIA_CAMERA_SUPPORT"
-              "MEDIA_PCI_SUPPORT"
-              "MEDIA_USB_SUPPORT"
-              # Unneeded Input
-              "INPUT_JOYSTICK"
-              "INPUT_TOUCHSCREEN"
-              "INPUT_TABLET"
-              "INPUT_MISC"
-              "LIRC"
-              # Unneeded Network/WiFi vendors (Pi uses Broadcom)
-              "NET_VENDOR_INTEL"
-              "NET_VENDOR_REALTEK"
-              "NET_VENDOR_AMD"
-              "NET_VENDOR_MELLANOX"
-              "NET_VENDOR_MARVELL"
-              "NET_VENDOR_ALTEON"
-              "NET_VENDOR_AMAZON"
-              "NET_VENDOR_CHELSIO"
-              "NET_VENDOR_CISCO"
-              "NET_VENDOR_DEC"
-              "NET_VENDOR_GOOGLE"
-              "NET_VENDOR_HP"
-              "NET_VENDOR_NI"
-              "NET_VENDOR_NVIDIA"
-              "NET_VENDOR_QLOGIC"
-              "NET_VENDOR_SUN"
-              "NET_VENDOR_NATSEMI"
-              "NET_VENDOR_NETRONOME"
-              "NET_VENDOR_8390"
-              "NET_VENDOR_OKI"
-              "NET_VENDOR_PENSANDO"
-              "NET_VENDOR_MEDIATEK"
-              "ETHOC"
-              "WLAN_VENDOR_INTEL"
-              "WLAN_VENDOR_MEDIATEK"
-              "WLAN_VENDOR_RALINK"
-              "WLAN_VENDOR_REALTEK"
-              "WLAN_VENDOR_ATH"
-              "WLAN_VENDOR_ATMEL"
-              "WLAN_VENDOR_CISCO"
-              "WLAN_VENDOR_MARVELL"
-              # Ancient / Exotic Filesystems
-              "JFS_FS"
-              "REISERFS_FS"
-              "OCFS2_FS"
-              "GFS2_FS"
-              "MINIX_FS"
-              "ROMFS_FS"
-              "NILFS2_FS"
-              "EXFAT_FS"
-              "NTFS3_FS"
-              "HFS_FS"
-              "HFSPLUS_FS"
-              "UDF_FS"
-              "ECRYPT_FS"
-              "UBIFS_FS"
-              "JFFS2_FS"
-              "XFS_FS"
-              "F2FS_FS"
-              "CIFS"
-              "NFS_FS"
-              "NFSD"
-              "CEPH_FS"
-              # Extreme Compile Speed (Hardware/Sensors)
-              "USB_NET_DRIVERS"
-              "USB_SERIAL"
-              "IIO"
-              "FB_TFT"
-              "HID_A4TECH"
-              "HID_APPLE"
-              "HID_BELKIN"
-              "HID_CHERRY"
-              "HID_CHICONY"
-              "HID_CORSAIR"
-              "HID_EZKEY"
-              "HID_LOGITECH"
-              "HID_MAGICMOUSE"
-              "HID_MICROSOFT"
-              "HID_ROCCAT"
-              "HID_WACOM"
-              # Obsolete / Enterprise / Niche
-              "MACINTOSH_DRIVERS"
-              "ISA"
-              "EISA"
-              "MCA"
-              "ATM"
-              "FDDI"
-              "HIPPI"
-              "ISDN"
-              "HAMRADIO"
-              "CAN"
-              "PCCARD"
-              "INFINIBAND"
-              "SCSI_LOWLEVEL"
-              "MEGARAID_NEWGEN"
-              "FUSION"
-              "CHROME_PLATFORMS"
-              "ACCESSIBILITY"
-              "CDROM"
-              "WAN"
-              "STAGING"
-              "STAGING_MEDIA"
-              "VIRT_DRIVERS"
-              "VIRTIO_MENU"
-              "KVM"
-              "FB_3DFX"
-              "FB_ATY"
-              "FB_SAVAGE"
-              "FB_SIS"
-              "FB_NVIDIA"
-              "FB_RIVA"
-              # Debug
-              "DEBUG_INFO"
-              "DEBUG_KERNEL"
-              # Server optimizations (Preempt)
-              "PREEMPT"
-              "PREEMPT_VOLUNTARY"
-              "HZ_1000"
-              "SUSPEND"
-              "HIBERNATION"
-            ];
-            disabledConfig = genAttrs disabledModules (name: mkForce no);
-          in
-          disabledConfig
-          // {
-            # Server Optimizations (Explicitly enabled)
+          {
+            # Subsystem Stripping (Cameras, Sound, Pi HATs, Sensors, 3D)
+            MEDIA_SUPPORT = mkForce no;
+            SOUND = mkForce no;
+            SND = mkForce no;
+            IIO = mkForce no;
+            FB_TFT = mkForce no;
+            INPUT_TOUCHSCREEN = mkForce no;
+            INPUT_JOYSTICK = mkForce no;
+            DRM_V3D = mkForce no;
+
+            # Server Optimizations
             PREEMPT_NONE = mkForce yes;
             HZ_250 = mkForce yes;
             TCP_CONG_BBR = mkForce yes;
             DEFAULT_BBR = mkForce yes;
+            SUSPEND = mkForce no;
+            HIBERNATION = mkForce no;
+
+            # NixOS Initrd & Essential Core Drivers
+            BLK_DEV_INITRD = mkForce yes;
+            DEVTMPFS = mkForce yes;
+            DEVTMPFS_MOUNT = mkForce yes;
+            RD_GZIP = mkForce yes;
+            RD_XZ = mkForce yes;
+            RD_ZSTD = mkForce yes;
+            EXT4_FS = mkForce yes;
+            BTRFS_FS = mkForce module;
+            OVERLAY_FS = mkForce module;
+            BLK_DEV_NVME = mkForce yes;
+            BLK_DEV_SD = mkForce yes;
+            USB_STORAGE = mkForce yes;
+            USB_XHCI_HCD = mkForce yes;
+            USB_HID = mkForce yes;
+            HID_GENERIC = mkForce yes;
+            PCIE_BRCMSTB = mkForce yes;
+            RESET_RASPBERRYPI = mkForce yes;
           };
       }
     );

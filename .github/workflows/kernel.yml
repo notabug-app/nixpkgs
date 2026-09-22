@@ -1,0 +1,65 @@
+name: Build Kernel Packages
+on:
+  workflow_call:
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - kernel-rpi4
+          - cpupower-rpi4
+          - kernel-rpi5
+          - cpupower-rpi5
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            access-tokens = github.com=${{ steps.app-token.outputs.token }}
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v17
+        with:
+          name: notabug
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          skipPush: true
+      - name: Build package
+        run: |
+          outputs=$(nix eval --accept-flake-config --raw ".#packages.aarch64-linux.${{ matrix.package }}" --apply 'p: builtins.concatStringsSep "," (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (p.outputs or ["out"]))')
+          nix build --accept-flake-config --no-link -L --json ".#packages.aarch64-linux.${{ matrix.package }}^$outputs" > built.json
+          jq empty built.json
+      - name: Push deployment outputs to Cachix
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        run: |
+          paths=$(jq -r '.[].outputs | to_entries[] | select(.key | test("^(dev|doc|man|info|debug|installedTests)$") | not) | .value' built.json)
+          if [ -z "$paths" ]; then
+            echo "::error::No deployment outputs found in built.json"
+            exit 1
+          fi
+          echo "Store paths to push:"
+          echo "$paths"
+          for i in {1..3}; do
+            if echo "$paths" | cachix push notabug; then
+              exit 0
+            fi
+            if [ "$i" -eq 3 ]; then
+              echo "::error::Failed to push to Cachix after 3 attempts"
+              exit 1
+            fi
+            echo "Cachix push failed, retrying in 10s (attempt $i/3)..."
+            sleep 10
+          done

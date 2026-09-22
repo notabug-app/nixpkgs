@@ -7,7 +7,7 @@ on:
       - '**.nix'
       - 'flake.lock'
       - 'versions.json'
-      - '.github/workflows/build.yml'
+      - '.github/workflows/**'
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -45,7 +45,7 @@ jobs:
             {
               include: (
                 ($x86 | map({os: "ubuntu-latest", arch: "x86_64-linux", package: .})) +
-                ($arm | map({os: "ubuntu-24.04-arm", arch: "aarch64-linux", package: .}))
+                ($arm | map(select(test("^(kernel|cpupower)-") | not)) | map({os: "ubuntu-24.04-arm", arch: "aarch64-linux", package: .}))
               )
             }
           ')
@@ -108,8 +108,13 @@ jobs:
             echo "Cachix push failed, retrying in 10s (attempt $i/3)..."
             sleep 10
           done
+  kernel:
+    uses: ./.github/workflows/kernel.yml
+    secrets: inherit
   promote:
-    needs: build
+    needs:
+      - build
+      - kernel
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/staging'
     steps:
