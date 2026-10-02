@@ -228,11 +228,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1790948449,
-        "narHash": "sha256-NGMp19gM9VlO+bNy+QfBxdtjVnl+DDITpKZDoU6DNAA=",
+        "lastModified": 1790952667,
+        "narHash": "sha256-//WXJGcvIRgrPq5moeP2yXCp9jCe71JqUV1eMXzRhIQ=",
         "owner": "notabug-app",
         "repo": "void",
-        "rev": "496912cc66bf2540ba591ab0a53a0c1c29a3901e",
+        "rev": "b30e30bf7f7a2c92f279be67ce4d93f8461075fb",
         "type": "github"
       },
       "original": {
