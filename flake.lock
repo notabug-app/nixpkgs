@@ -55,11 +55,11 @@
     },
     "crane_2": {
       "locked": {
-        "lastModified": 1789760033,
-        "narHash": "sha256-jtT4yxZpR8seYnlCMMWSSPlFN92zO6ICuZ8pJrmi86k=",
+        "lastModified": 1790899423,
+        "narHash": "sha256-THGtz65UGJU+sonZidRboyCMk+9DclpMF7pwL4uDV4M=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "73b980519cefc727a5f6cc8e5c0947a2f9be6edd",
+        "rev": "47b6b27ed9a3a9181415e4367d0c30ab2a0e0250",
         "type": "github"
       },
       "original": {
@@ -228,11 +228,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1790784104,
-        "narHash": "sha256-vNVp37VC7S3flJ2nFT3J7aVjS1x1a4Oi3AhP1fn81Xs=",
+        "lastModified": 1790948449,
+        "narHash": "sha256-NGMp19gM9VlO+bNy+QfBxdtjVnl+DDITpKZDoU6DNAA=",
         "owner": "notabug-app",
         "repo": "void",
-        "rev": "3d92e89727238068c7ee9c5f1c131878d9b3e8dc",
+        "rev": "496912cc66bf2540ba591ab0a53a0c1c29a3901e",
         "type": "github"
       },
       "original": {
