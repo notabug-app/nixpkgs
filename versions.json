@@ -7,14 +7,14 @@
     }
   },
   "kernel": {
-    "tag": "d6c0f04acd9120ba24198f41e2584096f7bf033d",
-    "modDirVersion": "7.2.8",
-    "srcHash": "sha256-V7zea1bctH3QGWuPiXfgvRaK5sJveP9DrQKnkyO1uJQ=",
+    "tag": "53679a5788f7912272b412fd78029bccae6f2b1a",
+    "modDirVersion": "7.2.9",
+    "srcHash": "sha256-Yme3P5T0IHODBl6xYhBK/GOyymhr+4ju2b3Ik7t4kGk=",
     "branch": "7.2.y"
   },
   "vaultwarden": {
-    "version": "1.37.3",
-    "hash": "0bbgyy70hpgr6s5qlbfkksc7l3xws89phlrrqvhcpgj2q1b16ssg"
+    "version": "1.37.4",
+    "hash": "0agq72sziizp9iyv2v2knkg7q8fbz7vlhirvypjrqyrw3nvha1yg"
   },
   "webvault": {
     "version": "v2026.7.0",
