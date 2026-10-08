@@ -14,6 +14,9 @@ prev.lib.optionalAttrs (sys == "aarch64-linux") {
   cf = inputs.cf.packages.${sys}.default;
   void = inputs.void.packages.${sys}.default;
 
+  sparkyfitness-server = inputs.sparkyfitness.packages.${sys}.sparkyfitness-server;
+  sparkyfitness-frontend = inputs.sparkyfitness.packages.${sys}.sparkyfitness-frontend;
+
   vaultwarden =
     let
       vw = versions.vaultwarden;

@@ -35,6 +35,11 @@
       url = "github:notabug-app/void";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sparkyfitness = {
+      url = "github:CodeWithCJ/SparkyFitness";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -120,6 +125,8 @@
             void
             vaultwarden
             vaultwarden-vault
+            sparkyfitness-server
+            sparkyfitness-frontend
             ;
         }
       );
@@ -146,6 +153,7 @@
               nixos-raspberrypi.nixosModules.default
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
+              inputs.sparkyfitness.nixosModules.default
             ];
 
             nixpkgs.overlays = [
