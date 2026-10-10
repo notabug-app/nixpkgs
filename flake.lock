@@ -184,11 +184,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791510421,
-        "narHash": "sha256-6uwXCAtEDynbM+kVsqKY4siS2PI2EAeCAHHUoUG/PGQ=",
+        "lastModified": 1791588513,
+        "narHash": "sha256-REAtGsUM24ELDoEKQGjlChNn+tPvdCdX/Fy9EWqhFQQ=",
         "owner": "CodeWithCJ",
         "repo": "SparkyFitness",
-        "rev": "667598f014f99c97fb920df857ebee5324f32d73",
+        "rev": "90bfb0adfd0e32722838b484384ad1470edb284a",
         "type": "github"
       },
       "original": {
