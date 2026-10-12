@@ -137,11 +137,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791643259,
-        "narHash": "sha256-92R98Uz6h0hDV/DnlTj1UgxM79bBmX8f3HzO+GZD6Hg=",
+        "lastModified": 1791738285,
+        "narHash": "sha256-w59x9ovbs1INYj7EtqdJWnLuGzQ8NI+288VBYNxwKFo=",
         "owner": "nvmd",
         "repo": "nixos-raspberrypi",
-        "rev": "0fca6c208be1707c87113f0989644f73a2407897",
+        "rev": "1118b1db88aac3079b1ea0ddf92eb0ab03a7010a",
         "type": "github"
       },
       "original": {
@@ -184,11 +184,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791657226,
-        "narHash": "sha256-V7SKu7Mg8INBDLMLXS3VFiKt207qNjUJqqJLu+LDT0o=",
+        "lastModified": 1791770785,
+        "narHash": "sha256-8lIJVQCtUY6VcrS83KkUFMDzhoqzjj1T7gP7/RDHI4c=",
         "owner": "CodeWithCJ",
         "repo": "SparkyFitness",
-        "rev": "4d8147aca0a6b315b48dd504a9f3aab80e71883e",
+        "rev": "0e25c6a810c5c4515a38232bda91cd478d8b6604",
         "type": "github"
       },
       "original": {
