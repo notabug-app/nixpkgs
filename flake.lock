@@ -184,11 +184,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791856146,
-        "narHash": "sha256-mL68A9TzhL9hXFsZfdvyrCvhHh52BfKlo5wGG2GQ0jU=",
+        "lastModified": 1791931565,
+        "narHash": "sha256-Wms4M9AHgza57wqf+oCn05aVoYa9WwplJNh+L7MwfvY=",
         "owner": "CodeWithCJ",
         "repo": "SparkyFitness",
-        "rev": "dc09ece61fc7c407ee6ecd03080a5eea2d7b004e",
+        "rev": "30d40b75013ff727fd78a4a3f0705a3c46a8e5e3",
         "type": "github"
       },
       "original": {
@@ -240,11 +240,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791490544,
-        "narHash": "sha256-qScE7Wz6Zg7eg8ItUpnkmKgst8weWschGe0E8jM4rj4=",
+        "lastModified": 1791885023,
+        "narHash": "sha256-C3alQ2MEt0zVrUSho5NUDo3jmhbff72++bfwoqT9Omo=",
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "rev": "4cfe8d7065cc8ca91c0a50361b6dd74920eeb1f5",
+        "rev": "0d6d739a833ba9a9c93034862e4a7b061a062a1c",
         "type": "github"
       },
       "original": {
