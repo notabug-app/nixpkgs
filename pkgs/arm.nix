@@ -21,20 +21,24 @@ prev.lib.optionalAttrs (sys == "aarch64-linux") {
     let
       vw = versions.vaultwarden;
     in
-    (prev.vaultwarden.override { dbBackend = "postgresql"; }).overrideAttrs (old: {
-      version = vw.version;
-      src = final.fetchFromGitHub {
-        owner = "dani-garcia";
-        repo = "vaultwarden";
-        tag = vw.version;
-        hash = vw.hash;
-      };
-      cargoDeps = null;
-      cargoHash = vw.cargoHash;
-      passthru = (old.passthru or { }) // {
-        webvault = final.vaultwarden-vault;
-      };
-    });
+    (prev.vaultwarden.override { dbBackend = "postgresql"; }).overrideAttrs (
+      finalAttrs: previousAttrs: {
+        version = vw.version;
+        src = final.fetchFromGitHub {
+          owner = "dani-garcia";
+          repo = "vaultwarden";
+          tag = vw.version;
+          hash = vw.hash;
+        };
+        cargoDeps = final.rustPlatform.fetchCargoVendor {
+          inherit (finalAttrs) src;
+          hash = vw.cargoHash;
+        };
+        passthru = (previousAttrs.passthru or { }) // {
+          webvault = final.vaultwarden-vault;
+        };
+      }
+    );
 
   vaultwarden-vault =
     let
