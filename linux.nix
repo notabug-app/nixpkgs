@@ -12,8 +12,8 @@ let
   kernelVersion = versions.kernel;
   mkLinuxPackages =
     rpiModel:
-    prev.linuxPackagesFor (
-      prev.callPackage "${inputs.nixos-raspberrypi}/pkgs/linux-rpi/package.nix" {
+    final.linuxPackagesFor (
+      final.callPackage "${inputs.nixos-raspberrypi}/pkgs/linux-rpi/package.nix" {
         inherit rpiModel;
         autoModules = false;
         modDirVersion = kernelVersion.modDirVersion;
@@ -54,10 +54,15 @@ let
             RD_ZSTD = mkForce yes;
             EXT4_FS = mkForce yes;
             BTRFS_FS = mkForce yes;
+            FAT_FS = mkForce yes;
+            VFAT_FS = mkForce yes;
+            NLS_CODEPAGE_437 = mkForce yes;
+            NLS_ISO8859_1 = mkForce yes;
             OVERLAY_FS = mkForce module;
             BLK_DEV_NVME = mkForce yes;
             BLK_DEV_SD = mkForce yes;
             USB_STORAGE = mkForce yes;
+            USB_UAS = mkForce yes;
             USB_XHCI_HCD = mkForce yes;
             USB_HID = mkForce yes;
             HID_GENERIC = mkForce yes;

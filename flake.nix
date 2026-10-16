@@ -86,11 +86,11 @@
       devShells = forAllSystems (
         system:
         let
-          pkgs = self.legacyPackages.${system};
+          pkgs = nixpkgs.legacyPackages.${system};
         in
         {
-          default = pkgs.mkShell {
-            nativeBuildInputs = [
+          default = pkgs.mkShellNoCC {
+            packages = [
               (pkgs.callPackage ./devshells/update-vaultwarden.nix { })
               (pkgs.callPackage ./devshells/update-helium.nix { })
               (pkgs.callPackage ./devshells/update-kernel.nix { })

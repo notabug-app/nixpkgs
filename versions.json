@@ -14,7 +14,8 @@
   },
   "vaultwarden": {
     "version": "1.37.4",
-    "hash": "0agq72sziizp9iyv2v2knkg7q8fbz7vlhirvypjrqyrw3nvha1yg"
+    "hash": "sha256-zwcFtx08e5zl9TtHSPf5yyF83rRTbLF9TPfH+LU4+Ck=",
+    "cargoHash": "sha256-xnqJwz0n/Ru+/lisbeUTeVXXT63E6c+91qSkAtl9tMw="
   },
   "webvault": {
     "version": "v2026.7.0",

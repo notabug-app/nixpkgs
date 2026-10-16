@@ -7,6 +7,8 @@ pkgs.writeShellApplication {
     jq
     nix
     git
+    gawk
+    gnugrep
   ];
   text = ''
     set -e
@@ -31,12 +33,33 @@ pkgs.writeShellApplication {
     VW_HASH=$(nix-prefetch-url --unpack "https://github.com/dani-garcia/vaultwarden/archive/refs/tags/''${VW_TAG}.tar.gz")
     WEB_HASH=$(nix-prefetch-url --unpack "https://github.com/dani-garcia/bw_web_builds/releases/download/''${WEB_TAG}/bw_web_''${WEB_TAG}.tar.gz")
 
+    CARGO_HASH=$(nix build --no-link --impure --expr "
+      let
+        pkgs = import (builtins.getFlake (toString ./.)).inputs.nixpkgs {};
+      in
+      pkgs.rustPlatform.fetchCargoVendor {
+        src = pkgs.fetchFromGitHub {
+          owner = \"dani-garcia\";
+          repo = \"vaultwarden\";
+          tag = \"$VW_TAG\";
+          hash = \"$VW_HASH\";
+        };
+        hash = \"sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\";
+      }
+    " 2>&1 | grep "got:" | awk '{print $2}' || true)
+
+    if [ -z "$CARGO_HASH" ]; then
+        echo "Error calculating cargoHash" >&2
+        exit 1
+    fi
+
     jq \
       --arg vw_ver "$VW_VERSION" \
       --arg vw_hash "$VW_HASH" \
+      --arg vw_cargo "$CARGO_HASH" \
       --arg web_ver "$WEB_TAG" \
       --arg web_hash "$WEB_HASH" \
-      '.vaultwarden.version = $vw_ver | .vaultwarden.hash = $vw_hash | .webvault.version = $web_ver | .webvault.hash = $web_hash' \
+      '.vaultwarden.version = $vw_ver | .vaultwarden.hash = $vw_hash | .vaultwarden.cargoHash = $vw_cargo | .webvault.version = $web_ver | .webvault.hash = $web_hash' \
       versions.json > versions.json.tmp && mv versions.json.tmp versions.json
 
     echo "vaultwarden: $VW_VERSION" >> .update-messages

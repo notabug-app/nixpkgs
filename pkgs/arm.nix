@@ -20,18 +20,17 @@ prev.lib.optionalAttrs (sys == "aarch64-linux") {
   vaultwarden =
     let
       vw = versions.vaultwarden;
-      vw_src = builtins.fetchTarball {
-        url = "https://github.com/dani-garcia/vaultwarden/archive/refs/tags/${vw.version}.tar.gz";
-        sha256 = vw.hash;
-      };
     in
     (prev.vaultwarden.override { dbBackend = "postgresql"; }).overrideAttrs (old: {
       version = vw.version;
-      src = vw_src;
-      cargoDeps = prev.rustPlatform.importCargoLock {
-        lockFile = "${vw_src}/Cargo.lock";
+      src = final.fetchFromGitHub {
+        owner = "dani-garcia";
+        repo = "vaultwarden";
+        tag = vw.version;
+        hash = vw.hash;
       };
-      cargoHash = "";
+      cargoDeps = null;
+      cargoHash = vw.cargoHash;
       passthru = (old.passthru or { }) // {
         webvault = final.vaultwarden-vault;
       };
@@ -41,10 +40,10 @@ prev.lib.optionalAttrs (sys == "aarch64-linux") {
     let
       wv = versions.webvault;
     in
-    prev.stdenv.mkDerivation {
+    final.stdenv.mkDerivation {
       pname = "vaultwarden-vault";
       version = wv.version;
-      src = builtins.fetchTarball {
+      src = final.fetchzip {
         url = "https://github.com/dani-garcia/bw_web_builds/releases/download/${wv.version}/bw_web_${wv.version}.tar.gz";
         sha256 = wv.hash;
       };
