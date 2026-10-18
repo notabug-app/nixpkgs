@@ -1,8 +1,8 @@
 {
   "helium": {
-    "version": "0.19.3.1",
+    "version": "0.19.4.1",
     "x86_64-linux": {
-      "hash": "sha256:0w25652mjwmpxnjnl6ivcd62kxxbc10wbydad69aa7wjblmh2klg",
+      "hash": "sha256:0s84ldmi26azwlib8zlacxpkhsyc0yb8mbxi3y11cngg1yhf99kc",
       "urlarch": "x86_64"
     }
   },
