@@ -152,11 +152,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1792210252,
-        "narHash": "sha256-Mh0PUaIv4nFY+8wAGonaEh8iBzwsmdNlwjVHmFg1Biw=",
+        "lastModified": 1792502884,
+        "narHash": "sha256-IoNisKcGbUjdd45qCqywGMCYmZ5EnkxezvLII0FWwNA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "09063bd1f2b36fd9fd793c36dfade7bd40a93dfc",
+        "rev": "02c087f3fe673c9e317f206a627cb6b910336dbe",
         "type": "github"
       },
       "original": {
@@ -184,11 +184,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792460067,
-        "narHash": "sha256-XHcIm7+VCVjpxd8mW7t5Esrheqz47jjm8IxVej3qx4s=",
+        "lastModified": 1792544791,
+        "narHash": "sha256-OL08sDGOiQDMIZY//rdwLaz99Ip0zrcSoXL/V9JyCAU=",
         "owner": "CodeWithCJ",
         "repo": "SparkyFitness",
-        "rev": "5a63ec6dcc3e1988b2e0eb6a35d436519b979f8b",
+        "rev": "5b19b859b477faf9b615231f3a5a2e20f7dfca27",
         "type": "github"
       },
       "original": {
