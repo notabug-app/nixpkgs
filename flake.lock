@@ -25,11 +25,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1789990803,
-        "narHash": "sha256-vASAkDYNBOV2uYf8Rv3axUXSRX0QqWnRB/rpFQ3I76Y=",
+        "lastModified": 1792586412,
+        "narHash": "sha256-dU8qjiSAoWnTHXs4fpkDLoc8CDBNL0Cl0/aFDCYYwss=",
         "owner": "notabug-app",
         "repo": "cf",
-        "rev": "21e414738a321a18d2d96f4c287badf0b2a3c90d",
+        "rev": "fc05bce57825d51261935ed840a005ace603c703",
         "type": "github"
       },
       "original": {
@@ -283,11 +283,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1791023436,
-        "narHash": "sha256-Wz3dpRrrEj3Y1yHnQvXVA/LR7/XpzHBayZldzyoguFQ=",
+        "lastModified": 1792586432,
+        "narHash": "sha256-aXtul4nKk90Jqrw3W25Yaswc6jgfSyCHGD0GgLefnOA=",
         "owner": "notabug-app",
         "repo": "void",
-        "rev": "0edf9d1e876887f38983721f0e7a15540ca65de3",
+        "rev": "1d9bd4e4e4b04bcb2b9876e71cae3076fd6ca6c6",
         "type": "github"
       },
       "original": {
