@@ -34,6 +34,21 @@ prev.lib.optionalAttrs (sys == "aarch64-linux") {
           inherit (finalAttrs) src;
           hash = vw.cargoHash;
         };
+        buildInputs = final.lib.unique (
+          previousAttrs.buildInputs
+          ++ [
+            final.sqlite
+            final.libpq
+          ]
+        );
+        cargoBuildFeatures = [
+          "postgresql"
+          "sqlite_system"
+        ];
+        cargoCheckFeatures = [
+          "postgresql"
+          "sqlite_system"
+        ];
         passthru = (previousAttrs.passthru or { }) // {
           webvault = final.vaultwarden-vault;
         };
