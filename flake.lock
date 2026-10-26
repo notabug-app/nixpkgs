@@ -184,11 +184,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792976847,
-        "narHash": "sha256-O7DLrm5wNE5wHp9kYm7Spy/yKZhsp22tWX1jpEpvkKk=",
+        "lastModified": 1793032220,
+        "narHash": "sha256-wajs2mPq3Q2to0Xhs8laeT7xgfZoI2n3t1UzTks7tx8=",
         "owner": "CodeWithCJ",
         "repo": "SparkyFitness",
-        "rev": "e4e67a989745de6effc4c3b62a327488f6f3087c",
+        "rev": "afe97622eaf9c17f66ef08bf1c40b2e1bb53d796",
         "type": "github"
       },
       "original": {
@@ -283,11 +283,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1792765241,
-        "narHash": "sha256-yBDTQYfN551IATLIDgg6Cic1lddhYI1X7M2nhi9d/us=",
+        "lastModified": 1793032819,
+        "narHash": "sha256-vDmGLnHFjCAzaSHrV4W9FcDtP+mQX+bfvdkUJ/lm4c4=",
         "owner": "notabug-app",
         "repo": "void",
-        "rev": "8cb7f87eb577649c575a7043629c007e43e39038",
+        "rev": "31b92b49eee4ac1b8c2b36e0f5be6b1ec9acaa18",
         "type": "github"
       },
       "original": {
