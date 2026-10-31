@@ -40,6 +40,11 @@
       url = "github:CodeWithCJ/SparkyFitness";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    firn = {
+      url = "github:notabug-app/firn";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -106,7 +111,7 @@
           pkgs = self.legacyPackages.${system};
         in
         {
-          inherit (pkgs) rustdoc-text;
+          inherit (pkgs) rustdoc-text firn;
         }
         // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           inherit (pkgs)
@@ -154,6 +159,7 @@
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
               inputs.sparkyfitness.nixosModules.default
+              inputs.firn.nixosModules.default
             ];
 
             nixpkgs.overlays = [
@@ -191,6 +197,7 @@
             imports = [
               inputs.cf.nixosModules.default
               inputs.void.nixosModules.default
+              inputs.firn.nixosModules.default
             ];
             nixpkgs.overlays = [ customOverlay ];
           };
