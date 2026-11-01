@@ -92,11 +92,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793495629,
-        "narHash": "sha256-UyR4QU3dczwGRlTjH820GuJPEFrG9PM1p4p4kvb4hDE=",
+        "lastModified": 1793496617,
+        "narHash": "sha256-9tSWteGCEiH+WM/fk6R/k/noQAbVNh8v3v7aGa0GD04=",
         "owner": "notabug-app",
         "repo": "firn",
-        "rev": "1fd640a4ad1cfd67775ff1da90603fa02d08eca6",
+        "rev": "8b7fbaf9720a0e46bd59ea409dcf2b705e62dc0b",
         "type": "github"
       },
       "original": {
