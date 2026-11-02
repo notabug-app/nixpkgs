@@ -13,12 +13,12 @@
     "branch": "7.3.y"
   },
   "vaultwarden": {
-    "version": "1.37.4",
-    "hash": "sha256-zwcFtx08e5zl9TtHSPf5yyF83rRTbLF9TPfH+LU4+Ck=",
-    "cargoHash": "sha256-xnqJwz0n/Ru+/lisbeUTeVXXT63E6c+91qSkAtl9tMw="
+    "version": "1.37.5",
+    "hash": "sha256-7r4vTThc98coMIOxPA61X/A8pLiAfPVJxJlWQY8yELw=",
+    "cargoHash": "sha256-onyxPAt3bVsF9Zj0Z+rnXoUA0NQLabYxxGqzhnVHz/E="
   },
   "webvault": {
-    "version": "v2026.7.0",
-    "hash": "0hiipdq7mnq8zmdp7b4jxz5lhm3lhgp1p91xyqa2grqjlzsfgv5g"
+    "version": "v2026.10.1",
+    "hash": "sha256-02Zo+Ih5HzFQENUV1URGg2OlLkhMOMpnOPPjj/xvjI0="
   }
 }
