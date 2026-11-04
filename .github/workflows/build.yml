@@ -15,6 +15,9 @@ concurrency:
 jobs:
   evaluate:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -36,6 +39,9 @@ jobs:
             access-tokens = github.com=${{ steps.app-token.outputs.token }}
       - name: Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          use-flakehub: false
+          use-gha-cache: true
       - name: Generate matrix
         id: set-matrix
         run: |
@@ -56,6 +62,9 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.evaluate.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Generate GitHub App Token
         id: app-token
@@ -81,9 +90,17 @@ jobs:
           skipPush: true
       - name: Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          use-flakehub: false
+          use-gha-cache: true
+          diff-store: true
       - name: Build package
         run: |
           outputs=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.${{ matrix.package }}" --apply 'p: builtins.concatStringsSep "," (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (p.outputs or ["out"]))')
+          has_artifacts=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.${{ matrix.package }}" --apply 'p: if (p.cargoArtifacts or (p.passthru.cargoArtifacts or null)) != null then "yes" else "no"' 2>/dev/null || echo "no")
+          if [ "$has_artifacts" = "yes" ]; then
+            nix build --accept-flake-config --no-link -L ".#packages.${{ matrix.arch }}.${{ matrix.package }}.cargoArtifacts"
+          fi
           nix build --accept-flake-config --no-link -L --json ".#packages.${{ matrix.arch }}.${{ matrix.package }}^$outputs" > built.json
           jq empty built.json
       - name: Push deployment outputs to Cachix
@@ -117,6 +134,8 @@ jobs:
       - kernel
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/staging'
+    permissions:
+      contents: write
     steps:
       - name: Generate GitHub App Token
         id: app-token
