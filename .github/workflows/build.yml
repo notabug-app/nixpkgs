@@ -56,8 +56,11 @@ jobs:
               except Exception:
                   return False
 
-          def get_uncached_packages(arch, exclude_prefixes=()):
-              expr = 'builtins.mapAttrs (name: p: map (o: p.${o}.outPath or "") (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (p.outputs or ["out"])))'
+          def get_uncached_packages(arch, filter_regex=None):
+              if filter_regex:
+                  expr = f'pkgs: builtins.listToAttrs (map (name: {{ inherit name; value = map (o: pkgs.${{name}}.${{o}}.outPath or "") (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (pkgs.${{name}}.outputs or ["out"])); }}) (builtins.filter (n: !(builtins.match "{filter_regex}" n != null)) (builtins.attrNames pkgs)))'
+              else:
+                  expr = 'pkgs: builtins.listToAttrs (map (name: { inherit name; value = map (o: pkgs.${name}.${o}.outPath or "") (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (pkgs.${name}.outputs or ["out"])); }) (builtins.attrNames pkgs))'
               cmd = ["nix", "eval", "--accept-flake-config", "--json", f".#packages.{arch}", "--apply", expr]
               try:
                   res = subprocess.check_output(cmd)
@@ -69,8 +72,6 @@ jobs:
               pkg_urls = {}
               all_urls = set()
               for pkg, paths in data.items():
-                  if any(pkg.startswith(pfx) for pfx in exclude_prefixes):
-                      continue
                   urls = []
                   for p in paths:
                       if not p:
@@ -96,7 +97,7 @@ jobs:
               return sorted(uncached)
 
           x86 = get_uncached_packages("x86_64-linux")
-          arm = get_uncached_packages("aarch64-linux", exclude_prefixes=("kernel-", "cpupower-"))
+          arm = get_uncached_packages("aarch64-linux", filter_regex="^(kernel|cpupower)-.*")
 
           matrix_include = []
           if x86:
