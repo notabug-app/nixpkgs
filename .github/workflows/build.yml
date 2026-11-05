@@ -89,7 +89,7 @@ jobs:
         with:
           use-flakehub: false
           use-gha-cache: true
-          diff-store: true
+          diff-store: false
       - name: Build and push packages
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
@@ -124,8 +124,10 @@ jobs:
 
             echo "Package $pkg uncached in Cachix. Starting build..."
             has_artifacts=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.$pkg" --apply 'p: if (p.cargoArtifacts or (p.passthru.cargoArtifacts or null)) != null then "yes" else "no"' 2>/dev/null || echo "no")
+            artifact_path=""
             if [ "$has_artifacts" = "yes" ]; then
               echo "Pre-building cargoArtifacts for $pkg..."
+              artifact_path=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.$pkg" --apply 'p: (p.cargoArtifacts or p.passthru.cargoArtifacts).outPath' 2>/dev/null || echo "")
               nix build --accept-flake-config --no-link -L ".#packages.${{ matrix.arch }}.$pkg.cargoArtifacts"
             fi
 
@@ -138,6 +140,10 @@ jobs:
             if [ -z "$built_paths" ]; then
               echo "::error::No deployment outputs found in built.json for $pkg"
               exit 1
+            fi
+
+            if [ -n "$artifact_path" ]; then
+              built_paths=$(printf "%s\n%s" "$built_paths" "$artifact_path")
             fi
 
             echo "Store paths to push for $pkg:"
