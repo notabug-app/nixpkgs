@@ -20,6 +20,7 @@ jobs:
       contents: read
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has_builds: ${{ steps.set-matrix.outputs.has_builds }}
     steps:
       - name: Generate GitHub App Token
         id: app-token
@@ -37,27 +38,91 @@ jobs:
         with:
           extra-conf: |
             access-tokens = github.com=${{ steps.app-token.outputs.token }}
-      - name: Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-        with:
-          use-flakehub: false
-          use-gha-cache: true
       - name: Generate matrix
         id: set-matrix
         run: |
-          x86=$(nix eval --accept-flake-config --json .#packages.x86_64-linux --apply 'builtins.attrNames')
-          arm=$(nix eval --accept-flake-config --json .#packages.aarch64-linux --apply 'builtins.attrNames')
-          matrix=$(jq -c -n --argjson x86 "$x86" --argjson arm "$arm" '
-            {
-              include: (
-                ($x86 | map({os: "ubuntu-latest", arch: "x86_64-linux", package: .})) +
-                ($arm | map(select(test("^(kernel|cpupower)-") | not)) | map({os: "ubuntu-24.04-arm", arch: "aarch64-linux", package: .}))
-              )
-            }
-          ')
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          python3 - <<'EOF'
+          import concurrent.futures
+          import json
+          import os
+          import subprocess
+          import urllib.request
+
+          def check_url(url):
+              req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "curl/8.0"})
+              try:
+                  with urllib.request.urlopen(req, timeout=10) as resp:
+                      return resp.status == 200
+              except Exception:
+                  return False
+
+          def get_uncached_packages(arch, exclude_prefixes=()):
+              expr = 'builtins.mapAttrs (name: p: map (o: p.${o}.outPath or "") (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (p.outputs or ["out"])))'
+              cmd = ["nix", "eval", "--accept-flake-config", "--json", f".#packages.{arch}", "--apply", expr]
+              try:
+                  res = subprocess.check_output(cmd)
+                  data = json.loads(res)
+              except Exception as e:
+                  print(f"Error evaluating {arch}: {e}")
+                  return []
+
+              pkg_urls = {}
+              all_urls = set()
+              for pkg, paths in data.items():
+                  if any(pkg.startswith(pfx) for pfx in exclude_prefixes):
+                      continue
+                  urls = []
+                  for p in paths:
+                      if not p:
+                          continue
+                      parts = p.split("/")
+                      if len(parts) > 3:
+                          h = parts[3].split("-")[0]
+                          urls.append(f"https://notabug.cachix.org/{h}.narinfo")
+                  pkg_urls[pkg] = urls
+                  all_urls.update(urls)
+
+              with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+                  url_status = dict(zip(all_urls, executor.map(check_url, all_urls)))
+
+              uncached = []
+              for pkg, urls in pkg_urls.items():
+                  if not urls or not all(url_status.get(u, False) for u in urls):
+                      uncached.append(pkg)
+                      print(f"[{arch}] Uncached (needs build): {pkg}")
+                  else:
+                      print(f"[{arch}] Cached in Cachix: {pkg}")
+
+              return sorted(uncached)
+
+          x86 = get_uncached_packages("x86_64-linux")
+          arm = get_uncached_packages("aarch64-linux", exclude_prefixes=("kernel-", "cpupower-"))
+
+          matrix_include = []
+          if x86:
+              matrix_include.append({"os": "ubuntu-latest", "arch": "x86_64-linux", "packages": x86})
+          if arm:
+              matrix_include.append({"os": "ubuntu-24.04-arm", "arch": "aarch64-linux", "packages": arm})
+
+          has_builds = bool(matrix_include)
+
+          # Fallback placeholder to satisfy GitHub Actions matrix validation if matrix_include is empty
+          if not matrix_include:
+              matrix_include.append({"os": "ubuntu-latest", "arch": "placeholder", "packages": []})
+
+          matrix = {"include": matrix_include}
+
+          github_output = os.environ.get("GITHUB_OUTPUT")
+          if github_output:
+              with open(github_output, "a") as f:
+                  f.write(f"matrix={json.dumps(matrix)}\n")
+                  f.write(f"has_builds={'true' if has_builds else 'false'}\n")
+          print("has_builds:", has_builds)
+          print("matrix:", json.dumps(matrix))
+          EOF
   build:
     needs: evaluate
+    if: needs.evaluate.outputs.has_builds == 'true'
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.evaluate.outputs.matrix) }}
@@ -94,36 +159,43 @@ jobs:
           use-flakehub: false
           use-gha-cache: true
           diff-store: true
-      - name: Build package
-        run: |
-          outputs=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.${{ matrix.package }}" --apply 'p: builtins.concatStringsSep "," (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (p.outputs or ["out"]))')
-          has_artifacts=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.${{ matrix.package }}" --apply 'p: if (p.cargoArtifacts or (p.passthru.cargoArtifacts or null)) != null then "yes" else "no"' 2>/dev/null || echo "no")
-          if [ "$has_artifacts" = "yes" ]; then
-            nix build --accept-flake-config --no-link -L ".#packages.${{ matrix.arch }}.${{ matrix.package }}.cargoArtifacts"
-          fi
-          nix build --accept-flake-config --no-link -L --json ".#packages.${{ matrix.arch }}.${{ matrix.package }}^$outputs" > built.json
-          jq empty built.json
-      - name: Push deployment outputs to Cachix
+      - name: Build and push packages
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          PACKAGES_JSON: ${{ toJson(matrix.packages) }}
         run: |
-          paths=$(jq -r '.[].outputs | to_entries[] | select(.key | test("^(dev|doc|man|info|debug|installedTests)$") | not) | .value' built.json)
-          if [ -z "$paths" ]; then
-            echo "::error::No deployment outputs found in built.json"
-            exit 1
-          fi
-          echo "Store paths to push:"
-          echo "$paths"
-          for i in {1..3}; do
-            if echo "$paths" | cachix push notabug; then
-              exit 0
+          for pkg in $(echo "$PACKAGES_JSON" | jq -r '.[]'); do
+            echo "::group::Building $pkg (${{ matrix.arch }})"
+            outputs=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.$pkg" --apply 'p: builtins.concatStringsSep "," (builtins.filter (o: !(builtins.elem o ["dev" "doc" "man" "info" "debug" "installedTests"])) (p.outputs or ["out"]))')
+            has_artifacts=$(nix eval --accept-flake-config --raw ".#packages.${{ matrix.arch }}.$pkg" --apply 'p: if (p.cargoArtifacts or (p.passthru.cargoArtifacts or null)) != null then "yes" else "no"' 2>/dev/null || echo "no")
+            if [ "$has_artifacts" = "yes" ]; then
+              echo "Pre-building cargoArtifacts for $pkg..."
+              nix build --accept-flake-config --no-link -L ".#packages.${{ matrix.arch }}.$pkg.cargoArtifacts"
             fi
-            if [ "$i" -eq 3 ]; then
-              echo "::error::Failed to push to Cachix after 3 attempts"
+            echo "Building $pkg outputs ($outputs)..."
+            rm -f built.json
+            nix build --accept-flake-config --no-link -L --json ".#packages.${{ matrix.arch }}.$pkg^$outputs" > built.json
+            jq empty built.json
+
+            paths=$(jq -r '.[].outputs | to_entries[] | select(.key | test("^(dev|doc|man|info|debug|installedTests)$") | not) | .value' built.json)
+            if [ -z "$paths" ]; then
+              echo "::error::No deployment outputs found in built.json for $pkg"
               exit 1
             fi
-            echo "Cachix push failed, retrying in 10s (attempt $i/3)..."
-            sleep 10
+            echo "Store paths to push for $pkg:"
+            echo "$paths"
+            for i in {1..3}; do
+              if echo "$paths" | cachix push notabug; then
+                break
+              fi
+              if [ "$i" -eq 3 ]; then
+                echo "::error::Failed to push $pkg to Cachix after 3 attempts"
+                exit 1
+              fi
+              echo "Cachix push failed, retrying in 10s (attempt $i/3)..."
+              sleep 10
+            done
+            echo "::endgroup::"
           done
   kernel:
     uses: ./.github/workflows/kernel.yml
@@ -133,7 +205,12 @@ jobs:
       - build
       - kernel
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'
+    if: |
+      always() &&
+      !cancelled() &&
+      (needs.build.result == 'success' || needs.build.result == 'skipped') &&
+      (needs.kernel.result == 'success' || needs.kernel.result == 'skipped') &&
+      github.ref == 'refs/heads/staging'
     permissions:
       contents: write
     steps:
