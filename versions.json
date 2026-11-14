@@ -1,15 +1,15 @@
 {
   "helium": {
-    "version": "0.21.2.1",
+    "version": "0.21.3.1",
     "x86_64-linux": {
-      "hash": "sha256:06dmw1h3bssv2s1z7sw7gkyq4s70b5d4djllw1dgny1g10z2ap75",
+      "hash": "sha256:0m62jqq11n158a1svbl4rv5swxcy2a6cqq9hmirfi0ki4cxcbww8",
       "urlarch": "x86_64"
     }
   },
   "kernel": {
-    "tag": "f5c3d2cd111eb9217c651d3457435e9a6064f659",
+    "tag": "f2b04c0857b73f4014513f0a89cb392fca0b2305",
     "modDirVersion": "7.3.3",
-    "srcHash": "sha256-POE4bCPJVNstFHIVqLlFOZdpzeWrnaz/cmLWWyD+Cdg=",
+    "srcHash": "sha256-ZMj8THNuK2vYWHBHpkMszeXjBdnyK/+P/XZaSmtEpaU=",
     "branch": "7.3.y"
   },
   "vaultwarden": {
